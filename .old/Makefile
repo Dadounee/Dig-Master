@@ -1,0 +1,28 @@
+CC = gcc -Wall -Wextra -Werror -g
+includes = ./includes/
+head = includes.h
+src = ./srcs/armor_inventory.c ./srcs/boots.c ./srcs/crates.c ./srcs/displays.c \
+./srcs/helmet.c ./srcs/inventory.c ./srcs/leggings.c ./srcs/main.c \
+./srcs/map.c ./srcs/mining.c ./srcs/ores.c ./srcs/pickaxe_radius.c \
+./srcs/pickaxes.c ./srcs/player.c ./srcs/sell_menu.c ./srcs/shops.c \
+./srcs/tops.c ./srcs/utilities.c ./srcs/zones.c
+object = $(src:.c=.o)
+NAME = dig_master
+
+all: $(NAME)
+
+%.o: %.c
+	$(CC) -c -I $(includes) -o $@ $^
+
+$(NAME): $(object)
+	$(CC) $(object) -o $@
+
+clean:
+	rm -rf *.o srcs/*.o
+
+fclean:  clean
+	rm -f $(NAME).exe
+
+re: fclean all
+
+.PHONY: clean re fclean all

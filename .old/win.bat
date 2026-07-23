@@ -1,0 +1,1 @@
+gcc -Wall -Wextra -Werror src/*.c -o dig_master && .\dig_master.exe
