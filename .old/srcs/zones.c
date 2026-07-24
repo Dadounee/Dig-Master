@@ -1,5 +1,25 @@
 #include "../includes/includes.h"
 
+/*
+static const zone zones[] =
+{
+    {
+        .name = "Surface",
+        .available_ores = surface_ores,
+        .probability = surface_prob,
+        .mine_map = {.map_len = 9, .map_height = 9},
+        .void_density = 5,
+        .price = 0,
+        .ore_nb = 3
+    },
+    {
+        .name = "Crust",
+        ...
+    }
+};
+*/
+
+
 zone *create_zone(char *name, ore *available_ores, int *probability, map_params parameters)
 {
     zone *zonee;
