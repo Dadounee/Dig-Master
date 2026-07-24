@@ -38,7 +38,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	make -C $(RAYLIB_DIR) fclean
+	make -C $(RAYLIB_DIR) clean
 
 re: fclean all
 
