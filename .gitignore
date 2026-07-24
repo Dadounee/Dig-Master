@@ -1,4 +1,3 @@
-
 # object files
 obj/*
 *.o
@@ -7,3 +6,6 @@ obj/*
 # lib files
 *.a
 */*.a
+
+# compiled project
+DigMaster

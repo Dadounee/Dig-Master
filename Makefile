@@ -3,21 +3,26 @@ NAME		= DigMaster
 OBJ_DIR		= obj
 RAYLIB_DIR	= libs/raylib/src
 
-SRCS		= srcs/test.c
+SRCS		= srcs/main.c
+MAP_SRCS	= srcs/map/ores.c
 
 OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o)
-LIBS		= -L./includes/raylib/src \
+RAYLIB		= libs/raylib/src/libraylib.a
+LIBS		= -L./libs/raylib/src \
+			-L./includes/funcs \
+			-L./includes/structs \
 			-lraylib \
-			-lopengl32 \
-			-lgdi32 \
-			-lwinmm \
+			-lGL \
 			-lm \
-			-lpthread
+			-lpthread \
+			-ldl \
+			-lrt \
+			-lX11
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g -I. -I$(RAYLIB_DIR)
+CFLAGS		= -Wall -Wextra -Werror -g -I./includes -I$(RAYLIB_DIR)
 
-all: $(NAME)
+all: $(RAYLIB) $(NAME)
 
 run: all
 	./$(NAME)
@@ -29,12 +34,11 @@ $(OBJ_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJS) $(RAYLIB)
+$(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -lreadline -o $(NAME)
 
 clean:
 	rm -rf $(OBJ_DIR)
-	make -C $(RAYLIB_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
