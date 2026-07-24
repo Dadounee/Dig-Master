@@ -1,11 +1,12 @@
 #include "map_structs.h"
 #include "ores_funcs.h"
+#include "libs.h"
 
 // Surface Zone
 
 static ore **o_surface(void)
 {
-    ore         *available_ores[3];
+    static ore         *available_ores[3];
 
     available_ores[0] = dirt();
     available_ores[1] = grass();
@@ -16,7 +17,7 @@ static ore **o_surface(void)
 
 static int *p_surface(void)
 {
-    int         probability[4];
+    static int         probability[4];
 
     probability[0] = 0;
     probability[1] = 500;
@@ -28,7 +29,7 @@ static int *p_surface(void)
 
 zone *z_surface(void)
 {
-    static const zone surface = {
+    static zone surface = {
         .name           = "Surface",
         .available_ores = o_surface,
         .ores_density    = p_surface,
@@ -49,7 +50,7 @@ zone *z_surface(void)
 
 static ore **o_crust(void)
 {
-    ore         *available_ores[4];
+    static ore         *available_ores[4];
 
     available_ores[0] = stone();
     available_ores[1] = coal();
@@ -61,7 +62,7 @@ static ore **o_crust(void)
 
 static int *p_crust(void)
 {
-    int         probability[5];
+    static int         probability[5];
 
     probability[0] = 0;
     probability[1] = 500;
@@ -74,7 +75,7 @@ static int *p_crust(void)
 
 zone *z_crust(void)
 {
-    static const zone crust = {
+    static zone crust = {
         .name           = "Crust",
         .available_ores = o_crust,
         .ores_density    = p_crust,
@@ -95,7 +96,7 @@ zone *z_crust(void)
 
 static ore **o_upper_mantel(void)
 {
-    ore         *available_ores[6];
+    static ore         *available_ores[6];
 
     available_ores[0] = tough_stone();
     available_ores[1] = stone();
@@ -109,7 +110,7 @@ static ore **o_upper_mantel(void)
 
 static int *p_upper_mantel(void)
 {
-    int         probability[7];
+    static int         probability[7];
 
     probability[0] = 0;
     probability[1] = 250;
@@ -124,7 +125,7 @@ static int *p_upper_mantel(void)
 
 zone *z_upper_mantel(void)
 {
-    static const zone upper_mantel = {
+    static zone upper_mantel = {
         .name           = "Upper Mantel",
         .available_ores = o_upper_mantel,
         .ores_density    = p_upper_mantel,
@@ -145,7 +146,7 @@ zone *z_upper_mantel(void)
 
 static ore **o_lower_mantel(void)
 {
-    ore         *available_ores[4];
+    static ore         *available_ores[4];
 
     available_ores[0] = deep_stone();
     available_ores[1] = gold();
@@ -157,7 +158,7 @@ static ore **o_lower_mantel(void)
 
 static int *p_lower_mantel(void)
 {
-    int         probability[5];
+    static int         probability[5];
 
     probability[0] = 0;
     probability[1] = 600;
@@ -170,7 +171,7 @@ static int *p_lower_mantel(void)
 
 zone *z_lower_mantel(void)
 {
-    static const zone lower_mantel = {
+    static zone lower_mantel = {
         .name           = "Lower Mantel",
         .available_ores = o_lower_mantel,
         .ores_density    = p_lower_mantel,
@@ -191,7 +192,7 @@ zone *z_lower_mantel(void)
 
 static ore **o_core(void)
 {
-    ore         *available_ores[4];
+    static ore         *available_ores[4];
 
     available_ores[0] = deep_stone();
     available_ores[1] = saphire();
@@ -203,7 +204,7 @@ static ore **o_core(void)
 
 static int *p_core(void)
 {
-    int         probability[5];
+    static int         probability[5];
 
     probability[0] = 0;
     probability[1] = 500;
@@ -215,7 +216,7 @@ static int *p_core(void)
 }
 zone *z_core(void)
 {
-    static const zone core = {
+    static zone core = {
         .name           = "Lower Mantel",
         .available_ores = o_core,
         .ores_density    = p_core,
@@ -234,9 +235,9 @@ zone *z_core(void)
 
 // The abyss
 
-static ore **o_core(void)
+static ore **o_abyss(void)
 {
-    ore         *available_ores[4];
+    static ore         *available_ores[4];
 
     available_ores[0] = abyss_stone();
     available_ores[1] = ruby();
@@ -246,9 +247,9 @@ static ore **o_core(void)
     return (available_ores);
 }
 
-static int *p_core(void)
+static int *p_abyss(void)
 {
-    int         probability[5];
+    static int         probability[5];
 
     probability[0] = 0;
     probability[1] = 550;
@@ -261,10 +262,10 @@ static int *p_core(void)
 
 zone *z_abyss(void)
 {
-    static const zone core = {
+    static zone abyss = {
         .name           = "Lower Mantel",
-        .available_ores = o_core,
-        .ores_density    = p_core,
+        .available_ores = o_abyss,
+        .ores_density    = p_abyss,
 
         .mine_map       = {.map_len = 15, .map_height = 12},
         .void_density   = 3200,
@@ -275,19 +276,20 @@ zone *z_abyss(void)
         .is_map = 0
     };
 
-    return (&core);
+    return (&abyss);
 }
 
-const zone **get_zones(void)
+zone **get_zones(void)
 {
-    static  zone zones[6];
+    static  zone **zones;
 
-    zones[0] = *z_surface();
-    zones[1] = *z_crust();
-    zones[2] = *z_upper_mantel();
-    zones[3] = *z_lower_mantel();
-    zones[4] = *z_core();
-    zones[5] = *z_abyss();
+    zones = malloc(sizeof(zone *) * 6);
+    zones[0] = z_surface();
+    zones[1] = z_crust();
+    zones[2] = z_upper_mantel();
+    zones[3] = z_lower_mantel();
+    zones[4] = z_core();
+    zones[5] = z_abyss();
 
-    return (&zones);
+    return (zones);
 }

@@ -57,7 +57,7 @@ void map_gen(zone *actual_zone)
     }
 }
 
-int mine_pos(player_data *player, int height, int lenght){}
+// int mine_pos(player_data *player, int height, int lenght){}
 /*{
     height--;
     lenght--;

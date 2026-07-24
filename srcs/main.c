@@ -4,23 +4,26 @@
 
 int main(void)
 {
-    const int screenWidth = 800;
-    const int screenHeight = 450;
 
+
+    const int screenWidth = GetScreenWidth();
+    const int screenHeight = GetScreenHeight();
+    
     InitWindow(screenWidth, screenHeight, "DigMaster");
+    ToggleBorderlessWindowed();
 
-    SetTargetFPS(60);
-
+    SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
     while (!WindowShouldClose())
     {
 
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(LIGHTGRAY);
 
-            DrawText("In progress", 190, 200, 20, LIGHTGRAY);
+            DrawText("In progress", 190, 200, 20, RAYWHITE);
 
         EndDrawing();
+
     }
 
     CloseWindow();

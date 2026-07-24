@@ -2,18 +2,20 @@
 
 ore *dirt(void)
 {
-    static const ore dirt={
+    static ore dirt={
         .name="Dirt",
         .rarity=common,
 
         .durability=1,
         .value=1
     };
+
+    return (&dirt);
 }
 
 ore *grass(void)
 {
-    static const ore grass={
+    static ore grass={
         .name="Grass",
         .rarity=common,
 
@@ -26,7 +28,7 @@ ore *grass(void)
 
 ore *stone(void)
 {
-    static const ore stone={
+    static ore stone={
         .name="Stone",
         .rarity=common,
 
@@ -39,7 +41,7 @@ ore *stone(void)
 
 ore *tough_stone(void)
 {
-    static const ore tough_stone={
+    static ore tough_stone={
         .name="Tough Stone",
         .rarity=common,
 
@@ -52,7 +54,7 @@ ore *tough_stone(void)
 
 ore *deep_stone(void)
 {
-    static const ore deep_stone={
+    static ore deep_stone={
         .name="Deep Stone",
         .rarity=uncommon,
 
@@ -65,7 +67,7 @@ ore *deep_stone(void)
 
 ore *abyss_stone(void)
 {
-    static const ore abyss_stone={
+    static ore abyss_stone={
         .name="Abyss Stone",
         .rarity=rare,
 
@@ -78,7 +80,7 @@ ore *abyss_stone(void)
 
 ore *coal(void)
 {
-    static const ore coal={
+    static ore coal={
         .name="Coal",
         .rarity=uncommon,
 
@@ -91,7 +93,7 @@ ore *coal(void)
 
 ore *copper(void)
 {
-    static const ore copper={
+    static ore copper={
         .name="Copper",
         .rarity=uncommon,
 
@@ -104,7 +106,7 @@ ore *copper(void)
 
 ore *iron(void)
 {
-    static const ore iron={
+    static ore iron={
         .name="Iron",
         .rarity=uncommon,
 
@@ -117,7 +119,7 @@ ore *iron(void)
 
 ore *silver(void)
 {
-    static const ore silver={
+    static ore silver={
         .name="Silver",
         .rarity=rare,
 
@@ -130,7 +132,7 @@ ore *silver(void)
 
 ore *amethyst(void)
 {
-    static const ore amethyst={
+    static ore amethyst={
         .name="Amethyst",
         .rarity=rare,
 
@@ -143,7 +145,7 @@ ore *amethyst(void)
 
 ore *gold(void)
 {
-    static const ore gold={
+    static ore gold={
         .name="Gold",
         .rarity=epic,
 
@@ -156,7 +158,7 @@ ore *gold(void)
 
 ore *emerald(void)
 {
-    static const ore emerald={
+    static ore emerald={
         .name="Emerald",
         .rarity=epic,
 
@@ -169,7 +171,7 @@ ore *emerald(void)
 
 ore *saphire(void)
 {
-    static const ore saphire={
+    static ore saphire={
         .name="Saphire",
         .rarity=legendary,
 
@@ -182,7 +184,7 @@ ore *saphire(void)
 
 ore *ruby(void)
 {
-    static const ore ruby={
+    static ore ruby={
         .name="Ruby",
         .rarity=legendary,
 
@@ -195,7 +197,7 @@ ore *ruby(void)
 
 ore *diamond(void)
 {
-    static const ore diamond={
+    static ore diamond={
         .name="Diamond",
         .rarity=legendary,
 
@@ -208,7 +210,7 @@ ore *diamond(void)
 
 ore *uranium(void)
 {
-    static const ore uranium={
+    static ore uranium={
         .name="Uranium",
         .rarity=unobtainable,
 

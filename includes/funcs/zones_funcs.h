@@ -10,4 +10,6 @@ zone *z_lower_mantel(void);
 zone *z_core(void);
 zone *z_abyss(void);
 
+zone **get_zones(void);
+
 #endif
