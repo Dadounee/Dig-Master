@@ -1,58 +1,6 @@
 #include "map_structs.h"
 #include "ores_funcs.h"
 
-/*
-static const zone zones[] =
-{
-    {
-        .name = "Surface",
-        .available_ores = surface_ores,
-        .probability = surface_prob,
-        .mine_map = {.map_len = 9, .map_height = 9},
-        .void_density = 5,
-        .price = 0,
-        .ore_nb = 3
-    },
-    {
-        .name = "Crust",
-        ...
-    }
-};
-*/
-
-
-zone *create_zone(char *name, ore *available_ores, int *probability, map_params parameters)
-{
-    zone *zonee;
-
-    zonee = malloc(sizeof(zone));
-    zonee->name = (char *)malloc(strlen(name) * sizeof(char));
-    zonee->name = name;
-
-    zonee->available_ores = available_ores;
-    zonee->probability = probability;
-    
-    zonee->mine_map.map_len = parameters.len;
-    zonee->mine_map.map_height = parameters.height;
-    zonee->void_density = parameters.void_density;
-    zonee->is_map = 0;
-    zonee->price = parameters.price;
-    zonee->ore_nb = parameters.ore_nb;
-
-    return (zonee);
-}
-
-void zone_free(zone *zone)
-{
-    free(zone->probability);
-    if (zone->is_map)
-    {
-        free(zone->name);
-        map_free(&zone->mine_map);
-    }
-    free(zone);
-}
-
 // Surface Zone
 
 static ore **o_surface(void)
@@ -83,7 +31,7 @@ zone *z_surface(void)
     static const zone surface = {
         .name           = "Surface",
         .available_ores = o_surface,
-        .probability    = p_surface,
+        .ores_density    = p_surface,
 
         .mine_map       = {.map_len = 9, .map_height = 9},
         .void_density   = 2000,
@@ -129,7 +77,7 @@ zone *z_crust(void)
     static const zone crust = {
         .name           = "Crust",
         .available_ores = o_crust,
-        .probability    = p_crust,
+        .ores_density    = p_crust,
 
         .mine_map       = {.map_len = 11, .map_height = 11},
         .void_density   = 2000,
@@ -179,7 +127,7 @@ zone *z_upper_mantel(void)
     static const zone upper_mantel = {
         .name           = "Upper Mantel",
         .available_ores = o_upper_mantel,
-        .probability    = p_upper_mantel,
+        .ores_density    = p_upper_mantel,
 
         .mine_map       = {.map_len = 12, .map_height = 10},
         .void_density   = 2000,
@@ -225,7 +173,7 @@ zone *z_lower_mantel(void)
     static const zone lower_mantel = {
         .name           = "Lower Mantel",
         .available_ores = o_lower_mantel,
-        .probability    = p_lower_mantel,
+        .ores_density    = p_lower_mantel,
 
         .mine_map       = {.map_len = 10, .map_height = 10},
         .void_density   = 0,
@@ -270,7 +218,7 @@ zone *z_core(void)
     static const zone core = {
         .name           = "Lower Mantel",
         .available_ores = o_core,
-        .probability    = p_core,
+        .ores_density    = p_core,
 
         .mine_map       = {.map_len = 9, .map_height = 9},
         .void_density   = 4000,
@@ -316,7 +264,7 @@ zone *z_abyss(void)
     static const zone core = {
         .name           = "Lower Mantel",
         .available_ores = o_core,
-        .probability    = p_core,
+        .ores_density    = p_core,
 
         .mine_map       = {.map_len = 15, .map_height = 12},
         .void_density   = 3200,

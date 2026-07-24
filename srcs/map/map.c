@@ -1,6 +1,6 @@
-#include "../includes/includes.h"
-#include <time.h>
-#include <stdlib.h>
+#include "ores_funcs.h"
+#include "player_structs.h"
+#include "libs.h"
 
 space create_space(zone *actual_zone)
 {
@@ -8,28 +8,30 @@ space create_space(zone *actual_zone)
     int     rand_i;
     space   sp;
 
-    if (rand() % 100 + 1 <= actual_zone->void_density)
+    // if (rand() % 200 + 1 >= 180)
+    //     sp.s_type = crate;
+
+    sp.discovered = 0;
+
+    rand_i = rand() % (1000 + actual_zone->void_density);
+    i = 0;
+    while (rand_i >= actual_zone->ores_density()[i + 1] && i < actual_zone->ore_nb)
+        i++;
+    if (i == actual_zone->ore_nb)
         sp.s_type = empty;
     else
         sp.s_type = mineral;
 
-    if (rand() % 200 + 1 >= 180)
-        sp.s_type = crate;
-
-    sp.discovered = 0;
     if (sp.s_type == mineral)
     {
-        rand_i = rand() % 1000;
-        i = 0;
-        while (rand_i >= actual_zone->probability[i+1])
-            i++;
-        sp.ore = actual_zone->available_ores[i];
+        sp.ore = *(actual_zone->available_ores())[i];
         sp.durability = sp.ore.durability;
     }
-    if (sp.s_type == crate)
-    {
-        sp.rarity = common;
-    }
+
+    // if (sp.s_type == crate)
+    // {
+    //     sp.rarity = common;
+    // }
     return (sp);
 }
 
@@ -55,8 +57,8 @@ void map_gen(zone *actual_zone)
     }
 }
 
-int mine_pos(player_data *player, int height, int lenght)
-{
+int mine_pos(player_data *player, int height, int lenght){}
+/*{
     height--;
     lenght--;
     player->equipped_weapons->pickaxe.radius(&player->actual_zone->mine_map, height, lenght);
@@ -99,7 +101,7 @@ int mine_pos(player_data *player, int height, int lenght)
     else
         player->mining_sta--;
     return (0);
-}
+}*/
 
 void map_free(map *map)
 {

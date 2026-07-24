@@ -58,8 +58,8 @@ typedef struct s_zone
 {
     char    *name;
     
-    ore     (**available_ores)(void);
-    int     (*ores_density)(void);
+    ore     **(*available_ores)(void);
+    int     *(*ores_density)(void);
     int     void_density;
     int     ennemies_density;
 

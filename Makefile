@@ -9,8 +9,8 @@ MAP_SRCS	= srcs/map/ores.c
 OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o)
 RAYLIB		= libs/raylib/src/libraylib.a
 LIBS		= -L./libs/raylib/src \
-			-L./includes/funcs \
-			-L./includes/structs \
+			-I./includes/funcs \
+			-I./includes/structs \
 			-lraylib \
 			-lGL \
 			-lm \
@@ -32,13 +32,13 @@ $(RAYLIB):
 
 $(OBJ_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(LIBS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -lreadline -o $(NAME)
 
 clean:
-	rm -rf $(OBJ_DIR)
+	rm -rf $(OBJ_DIR)/*
 
 fclean: clean
 	rm -f $(NAME)
