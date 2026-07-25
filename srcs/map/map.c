@@ -2,7 +2,7 @@
 #include "player_structs.h"
 #include "libs.h"
 
-space create_space(zone *actual_zone)
+static space create_space(zone *actual_zone)
 {
     int     i;
     int     rand_i;

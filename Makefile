@@ -6,7 +6,8 @@ RAYLIB_DIR	= libs/raylib/src
 SRCS		= srcs/main.c
 MAP_SRCS	= srcs/map/ores.c \
 			srcs/map/zones.c \
-			srcs/map/map.c
+			srcs/map/map.c \
+			srcs/map/display_map.c
 
 OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o) $(MAP_SRCS:%.c=$(OBJ_DIR)/%.o)
 RAYLIB		= libs/raylib/src/libraylib.a

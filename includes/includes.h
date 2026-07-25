@@ -7,6 +7,9 @@
 # include "weapons_structs.h"
 
 // game funcs
+# include "map_funcs.h"
 # include "ores_funcs.h"
+# include "zones_funcs.h"
+# include "display_funcs.h"
 
 #endif
