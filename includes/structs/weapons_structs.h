@@ -21,7 +21,7 @@ typedef struct s_pickaxe
     int cost;
 
     int *effects;
-    void (*radius)();
+    int radius;
 } pickaxe;
 
 typedef struct s_armor
@@ -38,14 +38,5 @@ typedef struct s_armor
     int     slot;
     int     rarity;
 } armor;
-
-typedef struct s_armor_param
-{
-    int hp;
-    int str;
-    int speed;
-    int mining_str;
-    int mining_sta;
-} a_params;
 
 #endif

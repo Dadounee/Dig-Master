@@ -10,6 +10,8 @@
 # include "map_funcs.h"
 # include "ores_funcs.h"
 # include "zones_funcs.h"
+# include "player_funcs.h"
 # include "display_funcs.h"
+# include "weapons_funcs.h"
 
 #endif

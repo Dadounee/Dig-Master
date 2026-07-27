@@ -2,19 +2,21 @@
 #include "raylib.h"
 #include "includes.h"
 
-void    click_handler(zone *zone)
+void    click_handler(player_data *player)
 {
     if (IsMouseButtonPressed(0))
     {
-        click_mining(zone, 1.0f);
+        click_mining(player, 1.0f);
     }
 }
 
 int main(void)
 {
-    zone *test = z_abyss();
-    map_gen(test);
+    player_data *player = player_init();
 
+    map_gen(player->actual_zone);
+    pick_radius(&player->actual_zone->mine_map, 5, 5, 3);
+    player->actual_sta = player->mining_sta;
 
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
@@ -30,16 +32,16 @@ int main(void)
         
             ClearBackground(LIGHTGRAY);
             
-            display_map(test, 1.0f);
+            display_map(player->actual_zone, 1.0f);
             DrawText("In progress", 190, 200, 20, RAYWHITE);
 
         EndDrawing();
 
-        click_handler(test);
+        click_handler(player);
     }
 
     CloseWindow();
-    map_free(&test->mine_map);
+    player_free(player);
 
     return (0);
 }

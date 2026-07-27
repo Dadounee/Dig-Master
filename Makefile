@@ -9,7 +9,16 @@ MAP_SRCS	= srcs/map/ores.c \
 			srcs/map/map.c \
 			srcs/map/display_map.c
 
-OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o) $(MAP_SRCS:%.c=$(OBJ_DIR)/%.o)
+WEAPNS_SRCS = srcs/weapons/pickaxe_radius.c \
+			srcs/weapons/pickaxes.c \
+			srcs/weapons/helmets.c \
+			srcs/weapons/chestplates.c \
+			srcs/weapons/leggings.c \
+			srcs/weapons/boots.c
+
+PLAYER_SRCS = srcs/player/player.c
+
+OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o) $(MAP_SRCS:%.c=$(OBJ_DIR)/%.o) $(WEAPNS_SRCS:%.c=$(OBJ_DIR)/%.o) $(PLAYER_SRCS:%.c=$(OBJ_DIR)/%.o)
 RAYLIB		= libs/raylib/src/libraylib.a
 LIBS		= -L./libs/raylib/src \
 			-I./includes/funcs \
@@ -23,7 +32,7 @@ LIBS		= -L./libs/raylib/src \
 			-lX11
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g -I./includes -I$(RAYLIB_DIR)
+CFLAGS		= -Wall -Wextra -Werror -g -I./includes -I$(RAYLIB_DIR) -o3
 
 all: $(RAYLIB) $(NAME)
 

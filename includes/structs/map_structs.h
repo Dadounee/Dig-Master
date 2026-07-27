@@ -19,7 +19,7 @@ typedef enum e_rarity
     epic,
     legendary,
     unobtainable
-} ore_rarity;
+} rarity;
 
 typedef struct s_ore
 {
