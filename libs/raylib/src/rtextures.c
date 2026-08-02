@@ -1837,7 +1837,6 @@ void ImageResize(Image *image, int newWidth, int newHeight)
             case PIXELFORMAT_UNCOMPRESSED_R8G8B8A8: stbir_resize_uint8_linear((unsigned char *)image->data, image->width, image->height, 0, output, newWidth, newHeight, 0, (stbir_pixel_layout)4); break;
             default: break;
         }
-
         RL_FREE(image->data);
         image->data = output;
         image->width = newWidth;

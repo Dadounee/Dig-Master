@@ -6,11 +6,12 @@
 
 static ore **o_surface(void)
 {
-    static ore         *available_ores[3];
+    static ore         *available_ores[4];
 
     available_ores[0] = dirt();
     available_ores[1] = grass();
     available_ores[2] = stone();
+    available_ores[3] = empty();
 
     return (available_ores);
 }
@@ -50,12 +51,13 @@ zone *z_surface(void)
 
 static ore **o_crust(void)
 {
-    static ore         *available_ores[4];
+    static ore         *available_ores[5];
 
     available_ores[0] = stone();
     available_ores[1] = coal();
     available_ores[2] = copper();
     available_ores[3] = iron();
+    available_ores[4] = empty();
 
     return (available_ores);
 }
@@ -96,7 +98,7 @@ zone *z_crust(void)
 
 static ore **o_upper_mantel(void)
 {
-    static ore         *available_ores[6];
+    static ore         *available_ores[7];
 
     available_ores[0] = tough_stone();
     available_ores[1] = stone();
@@ -104,6 +106,7 @@ static ore **o_upper_mantel(void)
     available_ores[3] = iron();
     available_ores[4] = silver();
     available_ores[5] = amethyst();
+    available_ores[6] = empty();
 
     return (available_ores);
 }
@@ -146,12 +149,13 @@ zone *z_upper_mantel(void)
 
 static ore **o_lower_mantel(void)
 {
-    static ore         *available_ores[4];
+    static ore         *available_ores[5];
 
     available_ores[0] = deep_stone();
     available_ores[1] = gold();
     available_ores[2] = emerald();
     available_ores[3] = saphire();
+    available_ores[4] = empty();
 
     return (available_ores);
 }
@@ -192,12 +196,13 @@ zone *z_lower_mantel(void)
 
 static ore **o_core(void)
 {
-    static ore         *available_ores[4];
+    static ore         *available_ores[5];
 
     available_ores[0] = deep_stone();
     available_ores[1] = saphire();
     available_ores[2] = ruby();
     available_ores[3] = diamond();
+    available_ores[4] = empty();
 
     return (available_ores);
 }
@@ -237,12 +242,13 @@ zone *z_core(void)
 
 static ore **o_abyss(void)
 {
-    static ore         *available_ores[4];
+    static ore         *available_ores[5];
 
     available_ores[0] = abyss_stone();
     available_ores[1] = ruby();
     available_ores[2] = diamond();
     available_ores[3] = uranium();
+    available_ores[4] = empty();
 
     return (available_ores);
 }

@@ -14,16 +14,17 @@ int main(void)
 {
     player_data *player = player_init();
 
+    InitWindow(1920, 1080, "DigMaster");
+    const int screenWidth = GetScreenWidth();
+
+    ToggleBorderlessWindowed();
+    load_ores_textures(screenWidth, 1.0f);
+    
     map_gen(player->actual_zone);
     player->actual_sta = player->mining_sta;
-
-    const int screenWidth = GetScreenWidth();
-    const int screenHeight = GetScreenHeight();
     
-    InitWindow(screenWidth, screenHeight, "DigMaster");
-    ToggleBorderlessWindowed();
-
     SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
+
     while (!WindowShouldClose())
     {
         click_handler(player);
@@ -38,6 +39,7 @@ int main(void)
                 display_map(player->actual_zone, 1.0f);
                 tile_info(&player->actual_zone->mine_map, 1.0f);
             }
+            DisplayPlayerInfos(player, 1.0f);
         
         EndDrawing();
     }

@@ -4,5 +4,6 @@
 # include "map_structs.h"
 
 void    display_map(zone *infos, float scale);
+void    DisplayPlayerInfos(player_data *player, float scale);
 
 #endif

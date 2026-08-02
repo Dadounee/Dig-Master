@@ -39,6 +39,8 @@ all: $(RAYLIB) $(NAME)
 run: all
 	./$(NAME)
 
+mine: clean all
+
 $(RAYLIB):
 	make -C $(RAYLIB_DIR)
 

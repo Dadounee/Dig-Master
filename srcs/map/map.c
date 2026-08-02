@@ -18,11 +18,14 @@ static space create_space(zone *actual_zone)
     while (rand_i >= actual_zone->ores_density()[i + 1] && i < actual_zone->ore_nb)
         i++;
     if (i == actual_zone->ore_nb)
-        sp.s_type = empty;
+    {
+        sp.s_type = EMPTY;
+        sp.ore = *(actual_zone->available_ores())[i];
+    }
     else
-        sp.s_type = mineral;
+        sp.s_type = MINERAL;
 
-    if (sp.s_type == mineral)
+    if (sp.s_type == MINERAL)
     {
         sp.ore = *(actual_zone->available_ores())[i];
         sp.durability = sp.ore.durability;
@@ -63,7 +66,7 @@ void map_gen(zone *actual_zone)
     lenght--;
     player->equipped_weapons->pickaxe.radius(&player->actual_zone->mine_map, height, lenght);
     
-    if (player->actual_zone->mine_map.map[height][lenght].s_type == mineral)
+    if (player->actual_zone->mine_map.map[height][lenght].s_type == MINERAL)
     {
         if (player->actual_zone->mine_map.map[height][lenght].durability <= 0)
             printf("%sThere's nothing interesting here anymore...%s\n", TC_WHT, TC_NRM);

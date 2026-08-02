@@ -2,13 +2,16 @@
 # define MAP_STRUCT_H
 
 # include <stdbool.h>
+# include "raylib.h"
+
+# define TILE_PROPORTION 30
 
 typedef enum e_type
 {
-    empty,
-    mineral,
-    monster,
-    crate
+    EMPTY,
+    MINERAL,
+    MONSTER,
+    CRATE
 } space_type;
 
 typedef enum e_rarity
@@ -28,6 +31,10 @@ typedef struct s_ore
     int     rarity;
     int     durability;
     int     value;
+
+    char        *fileName;
+    Image       image; // not that i need to detect if player has a gc
+    Texture2D   texture;
 } ore;
 
 typedef struct s_space
