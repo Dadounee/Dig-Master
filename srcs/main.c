@@ -33,7 +33,7 @@ int main(void)
         BeginDrawing();
         
             ClearBackground(LIGHTGRAY);
-        
+            DrawFPS(0, 0);
             if (player->display_actualisation)
             {
                 DisplayMap(player->actual_zone, 1.0f, player->inv->inv_size <= player->inv->oreCount);
