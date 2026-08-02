@@ -36,7 +36,6 @@ zone *z_surface(void)
         .ores_density    = p_surface,
 
         .mine_map       = {.map_len = 9, .map_height = 9},
-        .void_density   = 2000,
 
         .price  = 0,
         .ore_nb = 3,
@@ -83,7 +82,6 @@ zone *z_crust(void)
         .ores_density    = p_crust,
 
         .mine_map       = {.map_len = 11, .map_height = 11},
-        .void_density   = 2000,
 
         .price  = 1000,
         .ore_nb = 4,
@@ -134,7 +132,6 @@ zone *z_upper_mantel(void)
         .ores_density    = p_upper_mantel,
 
         .mine_map       = {.map_len = 12, .map_height = 10},
-        .void_density   = 2000,
 
         .price  = 10000,
         .ore_nb = 6,
@@ -181,7 +178,6 @@ zone *z_lower_mantel(void)
         .ores_density    = p_lower_mantel,
 
         .mine_map       = {.map_len = 10, .map_height = 10},
-        .void_density   = 0,
 
         .price  = 50000,
         .ore_nb = 4,
@@ -227,7 +223,6 @@ zone *z_core(void)
         .ores_density    = p_core,
 
         .mine_map       = {.map_len = 9, .map_height = 9},
-        .void_density   = 4000,
 
         .price  = 250000,
         .ore_nb = 4,
@@ -274,7 +269,6 @@ zone *z_abyss(void)
         .ores_density    = p_abyss,
 
         .mine_map       = {.map_len = 15, .map_height = 12},
-        .void_density   = 3200,
 
         .price  = 1000000,
         .ore_nb = 4,

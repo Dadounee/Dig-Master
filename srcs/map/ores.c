@@ -5,6 +5,7 @@
 ore *dirt(void)
 {
     static ore dirt={
+        .id=0,
         .name="Dirt",
         .rarity=common,
 
@@ -20,6 +21,7 @@ ore *dirt(void)
 ore *grass(void)
 {
     static ore grass={
+        .id=1,
         .name="Grass",
         .rarity=common,
 
@@ -35,6 +37,7 @@ ore *grass(void)
 ore *stone(void)
 {
     static ore stone={
+        .id=2,
         .name="Stone",
         .rarity=common,
 
@@ -50,6 +53,7 @@ ore *stone(void)
 ore *tough_stone(void)
 {
     static ore tough_stone={
+        .id=3,
         .name="Tough Stone",
         .rarity=common,
 
@@ -65,6 +69,7 @@ ore *tough_stone(void)
 ore *deep_stone(void)
 {
     static ore deep_stone={
+        .id=4,
         .name="Deep Stone",
         .rarity=uncommon,
 
@@ -80,6 +85,7 @@ ore *deep_stone(void)
 ore *abyss_stone(void)
 {
     static ore abyss_stone={
+        .id=5,
         .name="Abyss Stone",
         .rarity=rare,
 
@@ -95,6 +101,7 @@ ore *abyss_stone(void)
 ore *coal(void)
 {
     static ore coal={
+        .id=6,
         .name="Coal",
         .rarity=uncommon,
 
@@ -110,6 +117,7 @@ ore *coal(void)
 ore *copper(void)
 {
     static ore copper={
+        .id=7,
         .name="Copper",
         .rarity=uncommon,
 
@@ -125,6 +133,7 @@ ore *copper(void)
 ore *iron(void)
 {
     static ore iron={
+        .id=8,
         .name="Iron",
         .rarity=uncommon,
 
@@ -140,6 +149,7 @@ ore *iron(void)
 ore *silver(void)
 {
     static ore silver={
+        .id=9,
         .name="Silver",
         .rarity=rare,
 
@@ -155,6 +165,7 @@ ore *silver(void)
 ore *amethyst(void)
 {
     static ore amethyst={
+        .id=10,
         .name="Amethyst",
         .rarity=rare,
 
@@ -170,6 +181,7 @@ ore *amethyst(void)
 ore *gold(void)
 {
     static ore gold={
+        .id=11,
         .name="Gold",
         .rarity=epic,
 
@@ -185,6 +197,7 @@ ore *gold(void)
 ore *emerald(void)
 {
     static ore emerald={
+        .id=12,
         .name="Emerald",
         .rarity=epic,
 
@@ -200,6 +213,7 @@ ore *emerald(void)
 ore *saphire(void)
 {
     static ore saphire={
+        .id=13,
         .name="Saphire",
         .rarity=legendary,
 
@@ -215,6 +229,7 @@ ore *saphire(void)
 ore *ruby(void)
 {
     static ore ruby={
+        .id=14,
         .name="Ruby",
         .rarity=legendary,
 
@@ -230,6 +245,7 @@ ore *ruby(void)
 ore *diamond(void)
 {
     static ore diamond={
+        .id=15,
         .name="Diamond",
         .rarity=legendary,
 
@@ -245,6 +261,7 @@ ore *diamond(void)
 ore *uranium(void)
 {
     static ore uranium={
+        .id=16,
         .name="Uranium",
         .rarity=unobtainable,
 
@@ -260,6 +277,7 @@ ore *uranium(void)
 ore *empty(void)
 {
     static ore uranium={
+        .id=17,
         .name="Empty",
         .rarity=unobtainable,
 
@@ -284,7 +302,7 @@ ore **get_ores(void)
 {
     ore **all_ores;
 
-    all_ores = malloc(sizeof(zone *) * 18);
+    all_ores = malloc(sizeof(zone *) * ORE_NUMBER);
     all_ores[0] = dirt();
     all_ores[1] = coal();
     all_ores[2] = iron();
@@ -313,7 +331,7 @@ void    load_ores_textures(int screenWidth, float scale)
     int i = 0;
     // bool    can_load = true;
 
-    while (i < 18)
+    while (i < ORE_NUMBER)
     {
         ores[i]->image = LoadImage(ores[i]->fileName);
         if (IsImageValid(ores[i]->image))

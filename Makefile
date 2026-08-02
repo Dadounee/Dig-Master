@@ -7,7 +7,8 @@ SRCS		= srcs/main.c
 MAP_SRCS	= srcs/map/ores.c \
 			srcs/map/zones.c \
 			srcs/map/map.c \
-			srcs/map/display_map.c
+			srcs/map/display.c \
+			srcs/map/mining.c
 
 WEAPNS_SRCS = srcs/weapons/pickaxe_radius.c \
 			srcs/weapons/pickaxes.c \
@@ -16,7 +17,8 @@ WEAPNS_SRCS = srcs/weapons/pickaxe_radius.c \
 			srcs/weapons/leggings.c \
 			srcs/weapons/boots.c
 
-PLAYER_SRCS = srcs/player/player.c
+PLAYER_SRCS = srcs/player/player.c \
+			srcs/player/inventory.c
 
 OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o) $(MAP_SRCS:%.c=$(OBJ_DIR)/%.o) $(WEAPNS_SRCS:%.c=$(OBJ_DIR)/%.o) $(PLAYER_SRCS:%.c=$(OBJ_DIR)/%.o)
 RAYLIB		= libs/raylib/src/libraylib.a

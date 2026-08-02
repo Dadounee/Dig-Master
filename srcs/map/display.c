@@ -10,12 +10,12 @@
 
     to place after BeginDrawing(); does not end the writing event buffer
 */
-void    display_map(zone *infos, float scale)
+void    DisplayMap(zone *infos, float scale, int blocked)
 {
     int     tile_size = scale * GetScreenWidth() / TILE_PROPORTION;
     int     offset_x  = (GetScreenWidth() - tile_size * infos->mine_map.map_len) / 2;
     int     offset_y  = (GetScreenHeight() - tile_size * infos->mine_map.map_height) / 2;
-    Color   Darker  = {.r=127, .g=127, .b=127, .a=255}; 
+    Color   Darker  = {.r=95, .g=95, .b=95, .a=255}; 
 
     for (int grid_y = 0; grid_y < infos->mine_map.map_height ; grid_y++)
     {
@@ -23,31 +23,37 @@ void    display_map(zone *infos, float scale)
         {
             if (infos->mine_map.map[grid_y][grid_x].discovered)
             {
-                if (
-                    (infos->mine_map.map[grid_y][grid_x].s_type == MINERAL) ||
-                    (infos->mine_map.map[grid_y][grid_x].s_type == EMPTY)
-                )
-                    DrawTexture(
-                        infos->mine_map.map[grid_y][grid_x].ore.texture,
-                        offset_x + grid_x * tile_size,
-                        offset_y + grid_y * tile_size,
-                        WHITE
-                    );
-                if (infos->mine_map.map[grid_y][grid_x].s_type == EMPTY)
-                    DrawTexture(
-                        infos->mine_map.map[grid_y][grid_x].ore.texture,
-                        offset_x + grid_x * tile_size,
-                        offset_y + grid_y * tile_size,
-                        Darker
-                    );
+                if (infos->mine_map.map[grid_y][grid_x].s_type == MINERAL)
+                {
+                    if (infos->mine_map.map[grid_y][grid_x].durability > 0  && !blocked)
+                        DrawTexture(
+                            infos->mine_map.map[grid_y][grid_x].ore.texture,
+                            offset_x + grid_x * tile_size,
+                            offset_y + grid_y * tile_size,
+                            WHITE
+                        );
+                    else 
+                        DrawTexture(
+                            infos->mine_map.map[grid_y][grid_x].ore.texture,
+                            offset_x + grid_x * tile_size,
+                            offset_y + grid_y * tile_size,
+                            Darker
+                        );
+                }
             }
-            else
-                DrawRectangle(
+            else if (!blocked)
+                DrawTexture(
+                    infos->available_ores()[infos->ore_nb]->texture,
                     offset_x + grid_x * tile_size,
                     offset_y + grid_y * tile_size,
-                    tile_size,
-                    tile_size,
-                    BLACK
+                    WHITE
+                );
+            else
+                DrawTexture(
+                    infos->available_ores()[infos->ore_nb]->texture,
+                    offset_x + grid_x * tile_size,
+                    offset_y + grid_y * tile_size,
+                    Darker
                 );
         }
     }
@@ -58,8 +64,8 @@ inline static void    lifebar(Vector2 pos, float height, float length, float sca
     Rectangle rec={
         .height = height * scale,
         .width = length * scale,
-        .x = pos.x,//GetScreenHeight() / 24,
-        .y = pos.y//GetScreenHeight() / 7
+        .x = pos.x,
+        .y = pos.y
     };
 
     DrawRectangleRounded(rec, 0.3f, 5, RED);
@@ -123,14 +129,6 @@ void    tile_info(map *mine_map, float scale)
             lifebar((Vector2){.x=GetScreenHeight() / 24, .y=GetScreenHeight() / 7}, GetScreenHeight() / 32, GetScreenWidth() / 5.5, scale, mine_map->map[cursor_y][cursor_x].durability / (float)mine_map->map[cursor_y][cursor_x].ore.durability);
             DrawText(health, GetScreenHeight() / 24 + 2, GetScreenHeight() / 7 + 2, GetScreenHeight() / 67.5, BLACK);
         }
-
-        // Draw vide
-        if (mine_map->map[cursor_y][cursor_x].s_type == EMPTY)
-        {
-            DrawText("Emptyness", GetScreenHeight() / 30, GetScreenHeight() / 30, GetScreenHeight() / 45, BLACK);
-            DrawText("type: None", GetScreenHeight() / 30, GetScreenHeight() / 15, GetScreenHeight() / 45, BLACK);
-            DrawText("\t\tWhat do you wanna know about this, it's\nliterally empty", GetScreenHeight() / 22.5, GetScreenHeight() / 15 + GetScreenHeight() / 40, GetScreenHeight() / 67.5, BLACK);
-        }
     }
     else
     {
@@ -173,28 +171,50 @@ void    DisplayPlayerInfos(player_data *player, float scale)
     DrawText(str, GetScreenHeight() / 15 + GetScreenHeight() / 5, GetScreenHeight() - GetScreenHeight() / 8 * scale, GetScreenHeight() / 45, BLACK);
 }
 
-void    click_mining(player_data *player, float scale)
+void    DisplayPlayerInv(player_data *player, float scale)
 {
-    int     tile_size = (scale * GetScreenHeight()) / (1.75 * player->actual_zone->mine_map.map_height);
-    int     offset_x  = (GetScreenWidth() - (tile_size + 1) * player->actual_zone->mine_map.map_len) / 2;
-    int     offset_y  = (GetScreenHeight() - (tile_size + 1) * player->actual_zone->mine_map.map_height) / 2;
+    char    capacity[16];
 
-    int     click_x = (GetMouseX() - offset_x) / (tile_size + 1);
-    int     click_y = (GetMouseY() - offset_y) / (tile_size + 1);
-
-    if (GetMouseX() < offset_x || click_x >= player->actual_zone->mine_map.map_len)
-        return ;
-    if (GetMouseY() < offset_y || click_y >= player->actual_zone->mine_map.map_height)
-        return ;
-
-    player->display_actualisation = true;
-    pick_radius(&player->actual_zone->mine_map, click_x, click_y, player->equipped_weapons.pickaxe->radius + 2);
-    player->actual_zone->mine_map.map[click_y][click_x].durability -= player->mining_str;
-    player->actual_sta--;
-    if (player->actual_sta <= 0)
+    DrawRectangleRounded((Rectangle) {
+            .height=GetScreenHeight() / 2.5 * scale,
+            .width=GetScreenWidth() / 5 * scale,
+            .x=GetScreenHeight() / 32,
+            .y=GetScreenHeight() / 10.3 + GetScreenHeight() / 5 * scale
+        },
+        0.1f,
+        5,
+        SKYBLUE
+    );
+    DrawText("Inventory:", GetScreenHeight() / 30, GetScreenHeight() / 10.3 + GetScreenHeight() / 5 * scale - GetScreenHeight() / 45, GetScreenHeight() / 45, BLACK);
+    sprintf(capacity, "%d/%d", player->inv->oreCount, player->inv->inv_size);
+    DrawText(capacity, GetScreenHeight() / 30 + 12 * GetScreenHeight() / 45, GetScreenHeight() / 10.3 + GetScreenHeight() / 5 * scale - GetScreenHeight() / 45, GetScreenHeight() / 45, BLACK);
+    if(player->inv->inv)
     {
-        map_free(&player->actual_zone->mine_map);
-        map_gen(player->actual_zone);
-        player->actual_sta = player->mining_sta;
+        char    count[8];
+
+        for (int i = 0; player->inv->inv[i] ; i++)
+        {
+            DrawTexture(
+                player->inv->inv[i]->texture,
+                GetScreenHeight() / 15 * scale + (player->inv->inv[i]->texture.width * 1.2) * (i % 4),
+                GetScreenHeight() / 3.2 * scale + (player->inv->inv[i]->texture.width * 1.2) * (i / 4),
+                WHITE
+            );
+            DrawText(
+                player->inv->inv[i]->name,
+                GetScreenHeight() / 15 * scale + (player->inv->inv[i]->texture.width * 1.2) * (i % 4),
+                GetScreenHeight() / 3.2 * scale + (player->inv->inv[i]->texture.width * 1.2) * (i / 4),
+                GetScreenHeight() / 60,
+                BLACK
+            );
+            sprintf(count, "%d", player->inv->counts[i]);
+            DrawText(
+                count,
+                GetScreenHeight() / 15 * scale + (player->inv->inv[i]->texture.width * 1.2) * (i % 4),
+                GetScreenHeight() / 3.2 * scale + (player->inv->inv[i]->texture.width * 1.2) * (i / 4) + GetScreenHeight() / 60,
+                GetScreenHeight() / 60,
+                BLACK
+            );
+        }
     }
 }

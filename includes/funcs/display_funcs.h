@@ -3,7 +3,8 @@
 
 # include "map_structs.h"
 
-void    display_map(zone *infos, float scale);
+void    DisplayMap(zone *infos, float scale, int blocked);
+void    DisplayPlayerInv(player_data *player, float scale);
 void    DisplayPlayerInfos(player_data *player, float scale);
 
 #endif

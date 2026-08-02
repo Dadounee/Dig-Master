@@ -22,7 +22,7 @@ int main(void)
     
     map_gen(player->actual_zone);
     player->actual_sta = player->mining_sta;
-    
+     
     SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
 
     while (!WindowShouldClose())
@@ -36,10 +36,11 @@ int main(void)
         
             if (player->display_actualisation)
             {
-                display_map(player->actual_zone, 1.0f);
+                DisplayMap(player->actual_zone, 1.0f, player->inv->inv_size <= player->inv->oreCount);
                 tile_info(&player->actual_zone->mine_map, 1.0f);
             }
             DisplayPlayerInfos(player, 1.0f);
+            DisplayPlayerInv(player, 1.0f);
         
         EndDrawing();
     }

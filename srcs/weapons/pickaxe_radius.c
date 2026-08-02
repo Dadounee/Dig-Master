@@ -6,7 +6,6 @@ void    pick_radius(map *map, int x, int y, int remaining_depth)
         return ;
 
     map->map[y][x].discovered = 1;
-    
     if (y + 1 < map->map_height)
         pick_radius(map, x, y + 1, remaining_depth - 1);
     if (y - 1 >= 0)

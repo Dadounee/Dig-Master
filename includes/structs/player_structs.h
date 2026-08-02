@@ -18,6 +18,7 @@ typedef struct s_p_inv
     int     inv_size;
     ore     **inv;
     int     *counts;
+    int     oreCount;
 
 } p_inventory;
 

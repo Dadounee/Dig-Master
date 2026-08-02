@@ -5,10 +5,10 @@
 # include "raylib.h"
 
 # define TILE_PROPORTION 30
+# define ORE_NUMBER 18
 
 typedef enum e_type
 {
-    EMPTY,
     MINERAL,
     MONSTER,
     CRATE
@@ -26,6 +26,7 @@ typedef enum e_rarity
 
 typedef struct s_ore
 {
+    int     id;
     char    *name;
 
     int     rarity;
@@ -57,7 +58,6 @@ typedef struct s_maps
     int     map_height;
 
     space   **map;
-    ore     *mined;
 
 } map;
 
@@ -67,7 +67,6 @@ typedef struct s_zone
     
     ore     **(*available_ores)(void);
     int     *(*ores_density)(void);
-    int     void_density;
     int     ennemies_density;
 
     int     price;
@@ -77,13 +76,5 @@ typedef struct s_zone
     bool    is_map;
 } zone;
 
-typedef struct s_map_params
-{
-    int ore_nb;
-    int len;
-    int height;
-    int void_density;
-    int price;
-} map_params;
 
 #endif

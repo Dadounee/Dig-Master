@@ -8,6 +8,7 @@
 */
 
 void        inventory_init(player_data *player);
+void        InventoryAdd(player_data *player, int minedX, int minedY);
 void        armor_inventory_init(player_data *player);
 void        inventories_free(player_data *player);
 

@@ -5,14 +5,6 @@
     INVENTORY INIT RELATED STUFF
 */
 
-void inventory_init(player_data *player)
-{
-    player->inv = malloc(sizeof(p_inventory));
-    player->inv->inv_size = 5;
-    player->inv->counts = malloc(player->inv->inv_size * sizeof(int *));
-    player->inv->inv = malloc(player->inv->inv_size * sizeof(ore *));
-}
-
 void armor_inventory_init(player_data *player)
 {
     player->weapons_inv = malloc(sizeof(weapons_inventory));
