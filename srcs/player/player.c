@@ -15,10 +15,6 @@ void armor_inventory_init(player_data *player)
 
 void inventories_free(player_data *player)
 {
-    free(player->inv->inv);
-    free(player->inv->counts);
-    free(player->inv);
-
     free(player->weapons_inv->inv);
     free(player->weapons_inv);
 }
@@ -85,6 +81,7 @@ player_data *player_init(void)
 
 void player_free(player_data *player)
 {
+    OreInventoryFree(player->inv);
     inventories_free(player);
     if (player->actual_zone->is_map)
         map_free(&player->actual_zone->mine_map);

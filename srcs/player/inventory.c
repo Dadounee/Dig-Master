@@ -10,9 +10,16 @@ void inventory_init(player_data *player)
     player->inv->inv = NULL;
 }
 
+void    OreInventoryFree(p_inventory *inv)
+{
+    free(inv->inv);
+    free(inv->counts);
+    free(inv);
+}
+
 /*
 
-    Adds an element to the player inventory, DOES NOT PERFORM FULLNESS CHECKS
+    Adds an element to the player inventory, DOES NOT PERFORM FULLNESS CHECKS (will add evenn if full)
 
 */
 void    InventoryAdd(player_data *player, int minedX, int minedY)
@@ -54,4 +61,19 @@ void    InventoryAdd(player_data *player, int minedX, int minedY)
     player->inv->inv[i + 1] = NULL;
     player->inv->counts[i] = 1;
     player->inv->oreCount++;
+}
+
+void SellInventory(player_data *player)
+{
+    int i = 0;
+    int count = 0;
+
+    while (count < player->inv->oreCount)
+    {
+        player->money += player->money_multiplier * player->inv->inv[i]->value * player->inv->counts[i];
+        count += player->inv->counts[i];
+        i++;
+    }
+    free(player->inv->inv);
+    free(player->inv->counts);
 }

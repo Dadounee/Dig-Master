@@ -28,7 +28,6 @@ int main(void)
     while (!WindowShouldClose())
     {
         click_handler(player);
-        
 
         BeginDrawing();
         

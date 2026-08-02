@@ -166,9 +166,14 @@ void    DisplayPlayerInfos(player_data *player, float scale)
     );
     sprintf(str, "%d/%d", player->actual_sta, player->mining_sta);
     DrawText(str, GetScreenHeight() / 24 + 2, GetScreenHeight() - GetScreenHeight() / 5.5 * scale + 2, GetScreenHeight() / 67.5, BLACK);
+    
     DrawText("Strength:", GetScreenHeight() / 15, GetScreenHeight() - GetScreenHeight() / 8 * scale, GetScreenHeight() / 45, BLACK);
     sprintf(str, "%d", player->mining_str);
     DrawText(str, GetScreenHeight() / 15 + GetScreenHeight() / 5, GetScreenHeight() - GetScreenHeight() / 8 * scale, GetScreenHeight() / 45, BLACK);
+    
+    DrawText("Money:", GetScreenHeight() / 15, GetScreenHeight() - GetScreenHeight() / 8 * scale + GetScreenHeight() / 45, GetScreenHeight() / 45, BLACK);
+    sprintf(str, "%lld", player->money);
+    DrawText(str, GetScreenHeight() / 15 + GetScreenHeight() / 5, GetScreenHeight() - GetScreenHeight() / 8 * scale + GetScreenHeight() / 45, GetScreenHeight() / 45, BLACK);
 }
 
 void    DisplayPlayerInv(player_data *player, float scale)
