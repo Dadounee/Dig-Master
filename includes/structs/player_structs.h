@@ -67,6 +67,8 @@ typedef struct s_player_data
     int                 luck_mult;
     int                 money_multiplier;
 
+    bool                display_actualisation;
+
 } player_data;
 
 typedef struct s_player_statistics

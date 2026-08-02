@@ -15,7 +15,6 @@ int main(void)
     player_data *player = player_init();
 
     map_gen(player->actual_zone);
-    pick_radius(&player->actual_zone->mine_map, 5, 5, 3);
     player->actual_sta = player->mining_sta;
 
     const int screenWidth = GetScreenWidth();
@@ -27,17 +26,20 @@ int main(void)
     SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
     while (!WindowShouldClose())
     {
+        click_handler(player);
         
+
         BeginDrawing();
         
             ClearBackground(LIGHTGRAY);
-            
-            display_map(player->actual_zone, 1.0f);
-            DrawText("In progress", 190, 200, 20, RAYWHITE);
-
+        
+            if (player->display_actualisation)
+            {
+                display_map(player->actual_zone, 1.0f);
+                tile_info(&player->actual_zone->mine_map, 1.0f);
+            }
+        
         EndDrawing();
-
-        click_handler(player);
     }
 
     CloseWindow();

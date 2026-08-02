@@ -87,6 +87,7 @@ player_data *player_init(void)
 
     first_weapons(&player);
     
+    player.display_actualisation = true;
     return (&player);
 }
 

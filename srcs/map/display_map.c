@@ -64,6 +64,91 @@ void    display_map(zone *infos, float scale)
     }
 }
 
+inline static void    ore_lifebar(float scale, float remaining_hp)
+{
+    Rectangle rec={
+        .height = GetScreenHeight() / 32 * scale,
+        .width = GetScreenWidth() / 5.5 * scale,
+        .x = GetScreenHeight() / 24,
+        .y = GetScreenHeight() / 7
+    };
+
+    DrawRectangleRounded(rec, 0.3f, 5, RED);
+    rec.width *= remaining_hp;
+    DrawRectangleRounded(rec, 0.3f, 5, GREEN);
+    rec.width = GetScreenWidth() / 5.5 * scale;
+    DrawRectangleRoundedLines(rec, 0.3f, 5, BLACK);
+}
+
+/*
+    Will display the hovered tile info
+
+        Works whatever the tile state is
+        needs a map and a scale to function (map *minemap, float scale)
+
+    NEEDS: sometimes its too slow, it needs to be reformed, 
+     la fonction est trop volumineuse et merite d'etre redivisee
+
+*/
+void    tile_info(map *mine_map, float scale)
+{
+    
+    int     tile_size = (scale * GetScreenHeight()) / (1.75 * mine_map->map_height);
+    int     offset_x  = (GetScreenWidth() - (tile_size + 1) * mine_map->map_len) / 2;
+    int     offset_y  = (GetScreenHeight() - (tile_size + 1) * mine_map->map_height) / 2;
+
+    int     cursor_x = (GetMouseX() - offset_x) / (tile_size + 1);
+    int     cursor_y = (GetMouseY() - offset_y) / (tile_size + 1);
+
+    Rectangle rec={
+        .height = GetScreenHeight() / 5 * scale,
+        .width = GetScreenWidth() / 5 * scale,
+        .x = GetScreenHeight() / 32,
+        .y = GetScreenHeight() / 32
+    };
+
+    if (GetMouseX() < offset_x || cursor_x >= mine_map->map_len)
+        return ;
+    if (GetMouseY() < offset_y || cursor_y >= mine_map->map_height)
+        return ;
+
+    // Debut du draw des infos
+    if (mine_map->map[cursor_y][cursor_x].discovered)
+    {
+        DrawRectangleRounded(rec, 0.1f, 5, SKYBLUE);
+
+        // Draw minerais
+        if (mine_map->map[cursor_y][cursor_x].s_type == mineral)
+        {
+            char health[20];
+
+            sprintf(health, "%d/%d", mine_map->map[cursor_y][cursor_x].durability, mine_map->map[cursor_y][cursor_x].ore.durability);
+
+            DrawText(mine_map->map[cursor_y][cursor_x].ore.name, GetScreenHeight() / 30, GetScreenHeight() / 30, GetScreenHeight() / 45, BLACK);
+            DrawText("type: Mineral", GetScreenHeight() / 30, GetScreenHeight() / 15, GetScreenHeight() / 45, BLACK);
+            DrawText("\t\tThey are usefull if you need want to earn\nsome cash", GetScreenHeight() / 22.5, GetScreenHeight() / 15 + GetScreenHeight() / 40, GetScreenHeight() / 67.5, BLACK);
+            ore_lifebar(scale, mine_map->map[cursor_y][cursor_x].durability / (float)mine_map->map[cursor_y][cursor_x].ore.durability);
+            DrawText(health, GetScreenHeight() / 24 + 2, GetScreenHeight() / 7 + 2, GetScreenHeight() / 67.5, BLACK);
+        }
+
+        // Draw vide
+        if (mine_map->map[cursor_y][cursor_x].s_type == empty)
+        {
+            DrawText("Emptyness", GetScreenHeight() / 30, GetScreenHeight() / 30, GetScreenHeight() / 45, BLACK);
+            DrawText("type: None", GetScreenHeight() / 30, GetScreenHeight() / 15, GetScreenHeight() / 45, BLACK);
+            DrawText("\t\tWhat do you wanna know about this, it's\nliterally empty", GetScreenHeight() / 22.5, GetScreenHeight() / 15 + GetScreenHeight() / 40, GetScreenHeight() / 67.5, BLACK);
+        }
+    }
+    else
+    {
+        // Draw undercover
+        DrawRectangleRounded(rec, 0.1f, 5, GRAY);
+        DrawText("???", GetScreenHeight() / 30, GetScreenHeight() / 30, GetScreenHeight() / 45, BLACK);
+        DrawText("type:", GetScreenHeight() / 30, GetScreenHeight() / 15, GetScreenHeight() / 45, BLACK);
+        DrawText("\t\t????????????????????????", GetScreenHeight() / 22.5, GetScreenHeight() / 15 + GetScreenHeight() / 40, GetScreenHeight() / 67.5, BLACK);
+    }
+}
+
 void    click_mining(player_data *player, float scale)
 {
     int     tile_size = (scale * GetScreenHeight()) / (1.75 * player->actual_zone->mine_map.map_height);
@@ -73,18 +158,19 @@ void    click_mining(player_data *player, float scale)
     int     click_x = (GetMouseX() - offset_x) / (tile_size + 1);
     int     click_y = (GetMouseY() - offset_y) / (tile_size + 1);
 
-    if (click_x < 0 || click_x >= player->actual_zone->mine_map.map_len)
+    if (GetMouseX() < offset_x || click_x >= player->actual_zone->mine_map.map_len)
         return ;
-    if (click_y < 0 || click_y >= player->actual_zone->mine_map.map_height)
+    if (GetMouseY() < offset_y || click_y >= player->actual_zone->mine_map.map_height)
         return ;
-    
-    player->actual_zone->mine_map.map[click_y][click_x].discovered = 1;
+
+    player->display_actualisation = true;
+    pick_radius(&player->actual_zone->mine_map, click_x, click_y, player->equipped_weapons.pickaxe->radius);
     player->actual_zone->mine_map.map[click_y][click_x].durability -= player->mining_str;
     player->actual_sta--;
     if (player->actual_sta <= 0)
     {
         map_free(&player->actual_zone->mine_map);
         map_gen(player->actual_zone);
-        player->actual_sta = player->mining_sta;
+        player->actual_sta = player->mining_sta + 20;
     }
 }

@@ -24,7 +24,7 @@ static space create_space(zone *actual_zone)
 
     if (sp.s_type == mineral)
     {
-        sp.ore = *(actual_zone->available_ores())[0];
+        sp.ore = *(actual_zone->available_ores())[i];
         sp.durability = sp.ore.durability;
     }
 
@@ -112,4 +112,5 @@ void map_free(map *map)
         free(map->map[i]);
         i++;
     }
+    free(map->map);
 }

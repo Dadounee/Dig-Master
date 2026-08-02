@@ -1,5 +1,5 @@
-#ifndef ORES_FUNCS
-# define ORES_FUNCS
+#ifndef MAP_FUNCS
+# define MAP_FUNCS
 
 # include "map_structs.h"
 # include "player_structs.h"
