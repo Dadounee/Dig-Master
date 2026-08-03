@@ -14,7 +14,7 @@
 # include "display_funcs.h"
 # include "weapons_funcs.h"
 
-// utils func
-int Sum(int *nbs);
+// button funcs
+# include "buttonFuncs.h"
 
 #endif

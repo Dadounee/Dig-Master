@@ -7,6 +7,7 @@ void    click_handler(player_data *player)
     if (IsMouseButtonPressed(0))
     {
         click_mining(player, 1.0f);
+        executeClicks(GetMousePosition());
     }
 }
 
@@ -24,15 +25,13 @@ int main(void)
     player->actual_sta = player->mining_sta;
      
     SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
-
     while (!WindowShouldClose())
     {
         click_handler(player);
 
         BeginDrawing();
-        
-            ClearBackground(LIGHTGRAY);
-            DrawFPS(0, 0);
+
+            ClearBackground(GRAY);
             if (player->display_actualisation)
             {
                 DisplayMap(player->actual_zone, 1.0f, player->inv->inv_size <= player->inv->oreCount);
@@ -40,12 +39,15 @@ int main(void)
             }
             DisplayPlayerInfos(player, 1.0f);
             DisplayPlayerInv(player, 1.0f);
-        
-        EndDrawing();
+            displayButtons(GetMousePosition());
+            DrawFPS(0, 0);
+            
+            EndDrawing();
     }
 
     CloseWindow();
     player_free(player);
+    clearButtons();
 
     return (0);
 }

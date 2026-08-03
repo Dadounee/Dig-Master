@@ -1,6 +1,6 @@
 /*
 
-    the goal is to make a universal button creator + handler
+    the goal is to make a universal Button creator + handler
 
 typedef void    clickAction(void *);
 typedef void    displayFunction(void *, float);
@@ -11,7 +11,7 @@ typedef enum    e_btnState {
     ACTIVE
 } btnState;
 
-typedef struct s_button_data {
+typedef struct s_Button_data {
     int             id;
     btnState        state;
 
@@ -19,7 +19,7 @@ typedef struct s_button_data {
     Rectangle       collRect;
     clickAction     *action;
     displayFunction *ui;
-} button;
+} Button;
 
 */
 #include "buttonData.h"
@@ -33,6 +33,7 @@ gButtonData    *getButtons(void)
     if (!Buttons)
     {
         Buttons = malloc(sizeof(gButtonData));
+        Buttons->id = 0;
         Buttons->max = 0;
         Buttons->count = 0;
         Buttons->existing_count = 0;
@@ -44,54 +45,56 @@ gButtonData    *getButtons(void)
 
 /*
 
-    create a "global" button var keeping track off all buttons
+    create a "global" Button var keeping track off all Buttons
 
 */
-int    addButton(button *new)
+int    addButton(Button *new)
 {
-    gButtonData *buttons = getButtons();
+    gButtonData *Buttons = getButtons();
 
-    if (!buttons->count)
+    if (!Buttons->count)
     {
-        buttons->max++;
-        buttons->btnsPtr = malloc(buttons->max * sizeof(button *));
-        buttons->btnsPtr[buttons->count++] = new;
+        Buttons->max++;
+        Buttons->btnsPtr = malloc(Buttons->max * sizeof(Button *));
+        Buttons->btnsPtr[Buttons->count++] = new;
     }
-    else if (buttons->count == buttons->max)
+    else if (Buttons->count == Buttons->max)
     {
-        buttons->max *= 2;
-        buttons->btnsPtr = realloc(buttons->btnsPtr, buttons->max * sizeof(button *));
-        buttons->btnsPtr[buttons->count++] = new;
+        Buttons->max *= 2;
+        Buttons->btnsPtr = realloc(Buttons->btnsPtr, Buttons->max * sizeof(Button *));
+        Buttons->btnsPtr[Buttons->count++] = new;
     }
     else
-        buttons->btnsPtr[buttons->count++] = new;
-    buttons->existing_count++;
-    return (buttons->count - 1);
+        Buttons->btnsPtr[Buttons->count++] = new;
+    Buttons->id++;
+    Buttons->existing_count++;
+    return (Buttons->id - 1);
 }
 
 /*
 
-    Will create a button using 2 handlers, a collide rect and a color and add it to the buttons list
+    Will create a Button using 2 handlers, a collide rect and a color and add it to the Buttons list
 
     notes:
         no collide rect results in a init abort (NULL returned)
-        no clickHandler will result in a warning (and a useless button)
+        no clickHandler will result in a warning (and a useless Button)
         no displayHandler will result on a black rectangle for ui with tint and a warning
         BLACK is normal hover
 
+    returns id if you want to update or remove button by hand
+
 */
-button  *createButton(clickAction *clickHandler, displayFunction *displayHandler, Rectangle collideRect,
-                    void *clickDependency, void *uiDependency1, void *uiDependency2)
+int  createButton(clickAction *clickHandler, displayFunction *displayHandler, Rectangle collideRect,
+                    void *clickDependency, void *uiDependency1, void *uiDependency2, int isHoverable)
 {
-    if (collideRect.height == 0 || collideRect.width == 0)
+    if (collideRect.height == 0 || collideRect.width == 0 || !clickHandler)
     {
-        printf("\tBUTTON: aborting due to empty collideRect provided\n");
-        return (NULL);
+        printf("\tBUTTON: aborting due to empty collideRect or no click handler provided\n");
+        return (-1);
     }
-    if (!clickHandler) { printf("\tBUTTON: WARNING: no click handler provided\n"); }
     if (!displayHandler) { printf("\tBUTTON: WARNING: no display handler provided\n"); }
 
-    button  *new = malloc(sizeof(button));
+    Button  *new = malloc(sizeof(Button));
 
     new->action = clickHandler;
     new->ui = displayHandler;
@@ -102,13 +105,15 @@ button  *createButton(clickAction *clickHandler, displayFunction *displayHandler
     new->clickDependency = clickDependency;
 
     new->id = addButton(new);
+    new->state = ACTIVE;
+    new->isHoverable = isHoverable;
 
-    return (new);
+    return (new->id);
 }
 
 /*
 
-    free the button
+    free the Button
 
 */
 void    removeButton(int id)
@@ -116,11 +121,14 @@ void    removeButton(int id)
     gButtonData  *Buttons = getButtons();
 
     if (id > Buttons->count) { return ; }
-    if (Buttons->btnsPtr[id])
+    for (int i = 0; i < Buttons->count; i++)
     {
-        free(Buttons->btnsPtr[id]);
-        Buttons->btnsPtr[id] = NULL;
-        Buttons->existing_count--;
+        if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->id == id)
+        {
+            free(Buttons->btnsPtr[i]);
+            Buttons->btnsPtr[i] = NULL;
+            Buttons->existing_count--;
+        }
     }
     
     // this section is here to see if we can optimise space taken
@@ -131,22 +139,23 @@ void    removeButton(int id)
         if ((1 << i) == Buttons->existing_count)
         {
             int     newCount = 0;
-            button  **newBtnsPtr = malloc(sizeof(Buttons->existing_count * sizeof(button *)));
+            Button  **newBtnsPtr = malloc(Buttons->existing_count * sizeof(Button *));
 
             for (i = 0; i < Buttons->count; i++)
             {
                 if (Buttons->btnsPtr[i])
                 {
-                    newBtnsPtr[newCount++] = Buttons->btnsPtr[i];
+                    newBtnsPtr[newCount] = Buttons->btnsPtr[i];
+                    newCount++;
                     if (newCount == Buttons->existing_count)
                         break;
                 }
-                i++;
             }
             free(Buttons->btnsPtr);
             Buttons->btnsPtr = newBtnsPtr;
             Buttons->max = Buttons->existing_count;
-            return ;
+            Buttons->count = Buttons->existing_count;
+            break ;
         }
         i++;
     }
@@ -155,22 +164,30 @@ void    refreshButton(int id, Vector2 cursorPos)
 {
     gButtonData  *Buttons = getButtons();
 
-    if (Buttons->btnsPtr[id] && Buttons->btnsPtr[id]->state != DISABLED)
+    for (int i = 0;i < Buttons->count; i++)
     {
-        if (Buttons->btnsPtr[id]->isHoverable && cursorPos.x > Buttons->btnsPtr[id]->collRect.x &&
-            cursorPos.x < Buttons->btnsPtr[id]->collRect.x + Buttons->btnsPtr[id]->collRect.width &&
-            cursorPos.y > Buttons->btnsPtr[id]->collRect.y &&
-            cursorPos.y < Buttons->btnsPtr[id]->collRect.y + Buttons->btnsPtr[id]->collRect.height)
+        if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->id != id)
+            continue ;
+        if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->state != DISABLED)
         {
-            Buttons->btnsPtr[id]->ui(Buttons->btnsPtr[id]->uiDependency1, Buttons->btnsPtr[id]->uiDependency2, true);
+
+            if (Buttons->btnsPtr[i]->isHoverable && cursorPos.x > Buttons->btnsPtr[i]->collRect.x &&
+            cursorPos.x < Buttons->btnsPtr[i]->collRect.x + Buttons->btnsPtr[i]->collRect.width &&
+            cursorPos.y > Buttons->btnsPtr[i]->collRect.y &&
+            cursorPos.y < Buttons->btnsPtr[i]->collRect.y + Buttons->btnsPtr[i]->collRect.height)
+            {
+                Buttons->btnsPtr[i]->ui(Buttons->btnsPtr[i]->uiDependency1, Buttons->btnsPtr[i]->uiDependency2, true);
+                break;
+            }
+            Buttons->btnsPtr[i]->ui(Buttons->btnsPtr[i]->uiDependency1, Buttons->btnsPtr[i]->uiDependency2, false);
+            break;
         }
-        Buttons->btnsPtr[id]->ui(Buttons->btnsPtr[id]->uiDependency1, Buttons->btnsPtr[id]->uiDependency2, false);
     }
 }
+    
+    /*
 
-/*
-
-    check if click is on an active button then exec button's job
+    check if click is on an active Button then exec Button's job
 
 */
 void    executeClicks(Vector2 clickPos)
@@ -194,7 +211,7 @@ void    executeClicks(Vector2 clickPos)
 
 /*
 
-    refresh the active buttons display
+    refresh the active Buttons display
 
 */
 void    displayButtons(Vector2 cursorPos)
@@ -205,12 +222,19 @@ void    displayButtons(Vector2 cursorPos)
     {
         if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->state != DISABLED)
         {
-            if (Buttons->btnsPtr[i]->isHoverable && cursorPos.x > Buttons->btnsPtr[i]->collRect.x &&
+            if (!Buttons->btnsPtr[i]->ui)
+            {
+                DrawRectangleRec(Buttons->btnsPtr[i]->collRect, LIGHTGRAY);
+                continue ;
+            }
+            if (Buttons->btnsPtr[i]->isHoverable && Buttons->btnsPtr[i]->state == ACTIVE &&
+                cursorPos.x > Buttons->btnsPtr[i]->collRect.x &&
                 cursorPos.x < Buttons->btnsPtr[i]->collRect.x + Buttons->btnsPtr[i]->collRect.width &&
                 cursorPos.y > Buttons->btnsPtr[i]->collRect.y &&
                 cursorPos.y < Buttons->btnsPtr[i]->collRect.y + Buttons->btnsPtr[i]->collRect.height)
             {
                 Buttons->btnsPtr[i]->ui(Buttons->btnsPtr[i]->uiDependency1, Buttons->btnsPtr[i]->uiDependency2, true);
+                continue ;
             }
             Buttons->btnsPtr[i]->ui(Buttons->btnsPtr[i]->uiDependency1, Buttons->btnsPtr[i]->uiDependency2, false);
         }
@@ -219,7 +243,7 @@ void    displayButtons(Vector2 cursorPos)
 
 /*
 
-    free all buttons + button buffer
+    free all Buttons + Button buffer
 
 */
 void    clearButtons(void)
@@ -237,4 +261,21 @@ void    clearButtons(void)
     if (Buttons->btnsPtr)
         free(Buttons->btnsPtr);
     free(Buttons);
+}
+
+void changeButtonState(int id, btnState state)
+{
+    gButtonData  *Buttons = getButtons();
+
+    if (id >= 0 && id < Buttons->id)
+    {
+        for (int i = 0;i < Buttons->count;i++)
+        {
+            if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->id == id)
+            {
+                Buttons->btnsPtr[id]->state = state;
+                break;
+            }
+        }
+    }
 }

@@ -24,20 +24,17 @@
         void            *clickDependency;
         void            *uiDependency1;
         void            *uiDependency2;
-    } button;
+    } Button;
 
     typedef struct s_gButtonData
     {
+        int     id;
         int     max;
         int     count;
         int     existing_count;
 
-        button  **btnsPtr;
+        Button  **btnsPtr;
 
     } gButtonData;
-    
-# define BUTTON_ACTIVATE(btn)   ((btn)->state = ACTIVE)
-# define BUTTON_DISABLE(btn)    ((btn)->state = DISABLED)
-# define BUTTON_DEACTIVATE(btn) ((btn)->state = DEACTIVATED)
 
 #endif
