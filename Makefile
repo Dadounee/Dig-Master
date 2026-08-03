@@ -3,7 +3,8 @@ NAME		= DigMaster
 OBJ_DIR		= obj
 RAYLIB_DIR	= libs/raylib/src
 
-SRCS		= srcs/main.c
+SRCS		= srcs/main.c \
+			srcs/buttonComponant/UiButtonHandler.c
 MAP_SRCS	= srcs/map/ores.c \
 			srcs/map/zones.c \
 			srcs/map/map.c \
