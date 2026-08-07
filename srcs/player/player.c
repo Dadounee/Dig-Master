@@ -72,6 +72,8 @@ player_data *player_init(void)
     player.mining_sta = 0;
     player.mining_str = 0;
     player.actual_sta = 0;
+    player.oldState = MINING;
+    player.gameState = MINING;
 
     first_weapons(&player);
     
@@ -85,7 +87,6 @@ void player_free(player_data *player)
     inventories_free(player);
     if (player->actual_zone->is_map)
         map_free(&player->actual_zone->mine_map);
-    // free(player);
 }
 
 /*
@@ -131,6 +132,18 @@ void    equip_pickaxe(player_data *player, pickaxe *pick)
     player->equipped_weapons.pickaxe = pick;
     player->mining_sta += player->equipped_weapons.pickaxe->mining_sta;
     player->mining_str += player->equipped_weapons.pickaxe->mining_str;
+}
+
+void    changeState(player_data *player)
+{
+    if (player->gameState == MINING)
+    {
+
+    }
+    else if (player->gameState == INVENTORY)
+    {
+        changeButtonStateName("inventoryButton", DISABLED);
+    }
 }
 
 // void swap_armor(player_data *player, armor *new_armor)
@@ -234,6 +247,28 @@ void    equip_pickaxe(player_data *player, pickaxe *pick)
 
 // void drop_s_equipped(player_data *player, int slot)
 // {
+//     switch (slot)
+//     {
+//     case 'h':
+//         rem_armor_stats(player, player->equipped_weapons->helmet);
+//         player->equipped_weapons->helmet = plain_armor();
+//         break;
+//     case 'c':
+//         rem_armor_stats(player, player->equipped_weapons->chestplate);
+//         player->equipped_weapons->chestplate = plain_armor();
+//         break;
+//     case 'l':
+//         rem_armor_stats(player, player->equipped_weapons->leggings);
+//         player->equipped_weapons->leggings = plain_armor();
+//         break;
+//     case 'b':
+//         rem_armor_stats(player, player->equipped_weapons->boots);
+//         player->equipped_weapons->boots = plain_armor();
+//         break;
+//     default:
+//         break;
+//     }
+// }
 //     switch (slot)
 //     {
 //     case 'h':

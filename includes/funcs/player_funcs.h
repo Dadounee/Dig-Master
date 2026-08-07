@@ -25,6 +25,7 @@ void first_weapons(player_data *player);
 
 player_data *player_init(void);
 void        player_free(player_data *player);
+void        changeState(player_data *player);
 
 
 /*

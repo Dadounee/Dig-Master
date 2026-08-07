@@ -14,6 +14,7 @@
 
     typedef struct s_button_data {
         int             id;
+        char            *name;
         btnState        state;
 
         int             isHoverable;

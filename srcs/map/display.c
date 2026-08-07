@@ -133,7 +133,7 @@ void    tile_info(map *mine_map, float scale)
     else
     {
         // Draw undercover
-        DrawRectangleRounded(rec, 0.1f, 5, GRAY);
+        DrawRectangleRounded(rec, 0.1f, 5, SKYBLUE);
         DrawText("???", GetScreenHeight() / 30, GetScreenHeight() / 30, GetScreenHeight() / 45, BLACK);
         DrawText("type:", GetScreenHeight() / 30, GetScreenHeight() / 15, GetScreenHeight() / 45, BLACK);
         DrawText("\t\t????????????????????????", GetScreenHeight() / 22.5, GetScreenHeight() / 15 + GetScreenHeight() / 40, GetScreenHeight() / 67.5, BLACK);

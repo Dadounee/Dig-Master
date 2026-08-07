@@ -12,69 +12,75 @@
 # define BASE_MONEY 0
 # define BASE_MULT 1
 
-typedef struct s_p_inv
-{
-    int     inv_upgrades;
-    int     inv_size;
-    ore     **inv;
-    int     *counts;
-    int     oreCount;
+    typedef enum s_game_state {
+        MINING,
+        INVENTORY
+    } gameState;
 
-} p_inventory;
+    typedef struct s_p_inv
+    {
+        int     inv_upgrades;
+        int     inv_size;
+        ore     **inv;
+        int     *counts;
+        int     oreCount;
 
-typedef struct s_w_inv
-{
-    int     inv_upgrades;
-    int     inv_size;
-    int     count;
-    armor   **inv;
+    } p_inventory;
 
-} weapons_inventory;
+    typedef struct s_w_inv
+    {
+        int     inv_upgrades;
+        int     inv_size;
+        int     count;
+        armor   **inv;
 
-
-typedef struct s_weapons
-{
-    pickaxe     *pickaxe;
-    sword       *sword;
-
-    armor       *helmet;
-    armor       *chestplate;
-    armor       *leggings;
-    armor       *boots;
-
-} weapons;
+    } weapons_inventory;
 
 
-typedef struct s_player_data
-{
-    zone                *actual_zone;
-    weapons             equipped_weapons;
-    p_inventory         *inv;
-    weapons_inventory   *weapons_inv;
+    typedef struct s_weapons
+    {
+        pickaxe     *pickaxe;
+        sword       *sword;
 
-    bool                unlocked_zones[6];
-    bool                unlocked_pickaxes[10];
+        armor       *helmet;
+        armor       *chestplate;
+        armor       *leggings;
+        armor       *boots;
 
-    long long           money;
-    int                 crates[1];
+    } weapons;
 
-    int                 hp;
-    int                 def;
-    int                 str;
-    int                 speed;
-    int                 mining_str;
-    int                 mining_sta;
-    int                 actual_sta;
-    int                 luck_mult;
-    int                 money_multiplier;
 
-    bool                display_actualisation;
+    typedef struct s_player_data
+    {
+        zone                *actual_zone;
+        weapons             equipped_weapons;
+        p_inventory         *inv;
+        weapons_inventory   *weapons_inv;
 
-} player_data;
+        bool                unlocked_zones[6];
+        bool                unlocked_pickaxes[10];
 
-typedef struct s_player_statistics
-{
-    int     exp;
-} statistics;
+        long long           money;
+        int                 crates[1];
+
+        int                 hp;
+        int                 def;
+        int                 str;
+        int                 speed;
+        int                 mining_str;
+        int                 mining_sta;
+        int                 actual_sta;
+        int                 luck_mult;
+        int                 money_multiplier;
+
+        bool                display_actualisation;
+        unsigned char       oldState;
+        unsigned char       gameState;
+    } player_data;
+
+    typedef struct s_player_statistics
+    {
+        int     exp;
+    } statistics;
 
 #endif

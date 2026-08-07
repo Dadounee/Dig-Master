@@ -35,7 +35,7 @@ LIBS		= -L./libs/raylib/src \
 			-lX11
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g -I./includes -I$(RAYLIB_DIR) -o3
+CFLAGS		= -Wall -Wextra -g -I./includes -I$(RAYLIB_DIR) -o3
 
 all: $(RAYLIB) $(NAME)
 

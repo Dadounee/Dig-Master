@@ -28,7 +28,7 @@ typedef struct s_Button_data {
 
 gButtonData    *getButtons(void)
 {
-    static gButtonData  *Buttons = {0};
+    static gButtonData  *Buttons = NULL;
 
     if (!Buttons)
     {
@@ -80,12 +80,13 @@ int    addButton(Button *new)
         no clickHandler will result in a warning (and a useless Button)
         no displayHandler will result on a black rectangle for ui with tint and a warning
         BLACK is normal hover
+        name must nor be null, try using ""
 
     returns id if you want to update or remove button by hand
 
 */
-int  createButton(clickAction *clickHandler, displayFunction *displayHandler, Rectangle collideRect,
-                    void *clickDependency, void *uiDependency1, void *uiDependency2, int isHoverable)
+int  createButton( char *buttonName, clickAction *clickHandler, displayFunction *displayHandler, Rectangle collideRect,
+                    void *clickDependency, void *uiDependency1, void *uiDependency2, bool isHoverable)
 {
     if (collideRect.height == 0 || collideRect.width == 0 || !clickHandler)
     {
@@ -99,6 +100,7 @@ int  createButton(clickAction *clickHandler, displayFunction *displayHandler, Re
     new->action = clickHandler;
     new->ui = displayHandler;
     new->collRect = collideRect;
+    new->name = buttonName;
 
     new->uiDependency1 = uiDependency1;
     new->uiDependency2 = uiDependency2;
@@ -160,6 +162,56 @@ void    removeButton(int id)
         i++;
     }
 }
+
+/*
+
+    free the Button given its name
+
+*/
+void    removeButtonNamed(char *name)
+{
+    gButtonData  *Buttons = getButtons();
+
+    for (int i = 0; i < Buttons->count; i++)
+    {
+        if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->name == name)
+        {
+            free(Buttons->btnsPtr[i]);
+            Buttons->btnsPtr[i] = NULL;
+            Buttons->existing_count--;
+        }
+    }
+    
+    // this section is here to see if we can optimise space taken
+    int i = 0;
+
+    while(i < 31) 
+    {
+        if ((1 << i) == Buttons->existing_count)
+        {
+            int     newCount = 0;
+            Button  **newBtnsPtr = malloc(Buttons->existing_count * sizeof(Button *));
+
+            for (i = 0; i < Buttons->count; i++)
+            {
+                if (Buttons->btnsPtr[i])
+                {
+                    newBtnsPtr[newCount] = Buttons->btnsPtr[i];
+                    newCount++;
+                    if (newCount == Buttons->existing_count)
+                        break;
+                }
+            }
+            free(Buttons->btnsPtr);
+            Buttons->btnsPtr = newBtnsPtr;
+            Buttons->max = Buttons->existing_count;
+            Buttons->count = Buttons->existing_count;
+            break ;
+        }
+        i++;
+    }
+}
+
 void    refreshButton(int id, Vector2 cursorPos)
 {
     gButtonData  *Buttons = getButtons();
@@ -171,6 +223,30 @@ void    refreshButton(int id, Vector2 cursorPos)
         if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->state != DISABLED)
         {
 
+            if (Buttons->btnsPtr[i]->isHoverable && cursorPos.x > Buttons->btnsPtr[i]->collRect.x &&
+            cursorPos.x < Buttons->btnsPtr[i]->collRect.x + Buttons->btnsPtr[i]->collRect.width &&
+            cursorPos.y > Buttons->btnsPtr[i]->collRect.y &&
+            cursorPos.y < Buttons->btnsPtr[i]->collRect.y + Buttons->btnsPtr[i]->collRect.height)
+            {
+                Buttons->btnsPtr[i]->ui(Buttons->btnsPtr[i]->uiDependency1, Buttons->btnsPtr[i]->uiDependency2, true);
+                break;
+            }
+            Buttons->btnsPtr[i]->ui(Buttons->btnsPtr[i]->uiDependency1, Buttons->btnsPtr[i]->uiDependency2, false);
+            break;
+        }
+    }
+}
+
+void    refreshButtonName(char *name, Vector2 cursorPos)
+{
+    gButtonData  *Buttons = getButtons();
+
+    for (int i = 0;i < Buttons->count; i++)
+    {
+        if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->name != name)
+            continue ;
+        if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->state != DISABLED)
+        {
             if (Buttons->btnsPtr[i]->isHoverable && cursorPos.x > Buttons->btnsPtr[i]->collRect.x &&
             cursorPos.x < Buttons->btnsPtr[i]->collRect.x + Buttons->btnsPtr[i]->collRect.width &&
             cursorPos.y > Buttons->btnsPtr[i]->collRect.y &&
@@ -250,6 +326,7 @@ void    clearButtons(void)
 {
     gButtonData  *Buttons = getButtons();
 
+    if (!Buttons->btnsPtr) { return ;}
     for (int i = 0 ; i < Buttons->count ; i++)
     {
         if (Buttons->btnsPtr[i])
@@ -261,6 +338,7 @@ void    clearButtons(void)
     if (Buttons->btnsPtr)
         free(Buttons->btnsPtr);
     free(Buttons);
+    Buttons = NULL;
 }
 
 void changeButtonState(int id, btnState state)
@@ -273,9 +351,24 @@ void changeButtonState(int id, btnState state)
         {
             if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->id == id)
             {
-                Buttons->btnsPtr[id]->state = state;
+                Buttons->btnsPtr[i]->state = state;
                 break;
             }
+        }
+    }
+}
+
+void changeButtonStateName(char *name, btnState state)
+{
+    gButtonData  *Buttons = getButtons();
+
+
+    for (int i = 0;i < Buttons->count;i++)
+    {
+        if (Buttons->btnsPtr[i] && Buttons->btnsPtr[i]->name == name)
+        {
+            Buttons->btnsPtr[i]->state = state;
+            break;
         }
     }
 }

@@ -35,6 +35,7 @@ void map_gen(zone *actual_zone)
 
     srand(time(NULL));
 
+    actual_zone->is_map = true;
     actual_zone->mine_map.map = (space **) malloc(sizeof(space *) * actual_zone->mine_map.map_height);
     i = 0;
     while (i < actual_zone->mine_map.map_height)

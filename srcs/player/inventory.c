@@ -77,3 +77,51 @@ void SellInventory(player_data *player)
     free(player->inv->inv);
     free(player->inv->counts);
 }
+
+    // typedef void    clickAction(void *infos);
+    // typedef void    displayFunction(void *infos, void *infos2, bool isHovered);
+
+void    invButtonClick(void *infos)
+{
+    player_data *player = (player_data *)infos;
+
+    player->gameState = INVENTORY;
+}
+
+void    invButtonDisplay(void *infos, void *infos2, bool isHovered)
+{
+    (void)infos;
+    (void)infos2;
+    
+    if (!isHovered)
+    {
+        DrawRectangleRounded((Rectangle) {
+            .height=GetScreenHeight() / 5,
+            .width=GetScreenWidth() / 5,
+            .x=GetScreenHeight() / 32,
+            .y=GetScreenHeight() - GetScreenHeight() / 5 - GetScreenHeight() / 32
+        },
+        0.1f,
+        5,
+        DARKBLUE
+    );
+    }
+    else
+    {
+        DrawRectangleRounded((Rectangle) {
+            .height=GetScreenHeight() / 5,
+            .width=GetScreenWidth() / 5,
+            .x=GetScreenHeight() / 32,
+            .y=GetScreenHeight() - GetScreenHeight() / 5 - GetScreenHeight() / 32
+        },
+        0.1f,
+        5,
+        BLUE
+    );
+    }
+}
+
+void    inventoryDisplay(void)
+{
+
+}
