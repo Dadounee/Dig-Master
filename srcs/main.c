@@ -6,7 +6,7 @@ void    buttonCreation(player_data *player)
 {
     clearButtons();
 
-    createButton("inventoryButton", invButtonClick, invButtonDisplay, (Rectangle){ .height=GetScreenHeight() / 5, .width=GetScreenWidth() / 5, .x=GetScreenHeight() / 32, .y=GetScreenHeight() - GetScreenHeight() / 5 - GetScreenHeight() / 32 }, player, NULL, NULL, true);
+    createButton("inventoryButton", invButtonClick, invButtonDisplay, (Rectangle){ .height=GetScreenHeight() / 10, .width=GetScreenHeight() / 10, .x=GetScreenWidth() / 1.1, .y=GetScreenHeight() / 32 }, player, NULL, NULL, true);
 }
 
 void    eventHandler(player_data *player)
@@ -29,9 +29,13 @@ void    displayHandler(player_data *player)
         {
             DisplayMap(player->actual_zone, 1.0f, player->inv->inv_size <= player->inv->oreCount);
             tile_info(&player->actual_zone->mine_map, 1.0f);
+            DisplayPlayerInfos(player, 1.0f);
+            DisplayPlayerInv(player, 1.0f);
         }
-        DisplayPlayerInfos(player, 1.0f);
-        DisplayPlayerInv(player, 1.0f);
+        if ( player->gameState == INVENTORY)
+        {
+            inventoryDisplay();
+        }
         displayButtons(GetMousePosition());
         DrawFPS(0, 0);
         
@@ -51,7 +55,7 @@ int main(void)
     
     map_gen(player->actual_zone);
     player->actual_sta = player->mining_sta;
-    changeButtonStateName("inventoryButton", DISABLED);
+
     SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
     while (!WindowShouldClose())
     {

@@ -37,4 +37,9 @@ void        add_armor_stats(player_data *player, armor *ar);
 void        rem_armor_stats(player_data *player, armor *ar);
 void        equip_pickaxe(player_data *player, pickaxe *pick);
 
+/*
+    UI FUNCS
+*/
+void    inventoryDisplay(void);
+
 #endif

@@ -96,10 +96,10 @@ void    invButtonDisplay(void *infos, void *infos2, bool isHovered)
     if (!isHovered)
     {
         DrawRectangleRounded((Rectangle) {
-            .height=GetScreenHeight() / 5,
-            .width=GetScreenWidth() / 5,
-            .x=GetScreenHeight() / 32,
-            .y=GetScreenHeight() - GetScreenHeight() / 5 - GetScreenHeight() / 32
+            .height=GetScreenHeight() / 10,
+            .width=GetScreenHeight() / 10,
+            .x=GetScreenWidth() / 1.1f,
+            .y=GetScreenHeight() / 32
         },
         0.1f,
         5,
@@ -109,10 +109,10 @@ void    invButtonDisplay(void *infos, void *infos2, bool isHovered)
     else
     {
         DrawRectangleRounded((Rectangle) {
-            .height=GetScreenHeight() / 5,
-            .width=GetScreenWidth() / 5,
-            .x=GetScreenHeight() / 32,
-            .y=GetScreenHeight() - GetScreenHeight() / 5 - GetScreenHeight() / 32
+            .height=GetScreenHeight() / 10,
+            .width=GetScreenHeight() / 10,
+            .x=GetScreenWidth() / 1.1f,
+            .y=GetScreenHeight() / 32
         },
         0.1f,
         5,
