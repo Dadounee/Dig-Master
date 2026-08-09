@@ -22,12 +22,5 @@
 
 
 
-    // button creation related functions here
-    void    invButtonClick(void *infos);
-    void    invButtonDisplay(void *infos, void *infos2, bool isHovered);
-    void    returnBtnClick(void *infos);
-    void    returnBtnDisplay(void *infos, void *infos2, bool isHovered);
-    void    sellButtonClick(void *infos);
-    void    sellButtonDisplay(void *infos, void *infos2, bool isHovered);
 
 #endif

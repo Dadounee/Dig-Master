@@ -81,20 +81,20 @@ void    sellButtonDisplay(void *infos, void *infos2, bool isHovered)
     display things
 */
 
-void    sellMenuDisplay(void)
+void    sellMenuDisplay(player_data *player)
 {
     DrawRectangleRec((Rectangle) {
         .height=GetScreenHeight(),
         .width=GetScreenWidth(),
         .x=0,
         .y=0
-    },
-    (Color) {
-        .r=0,
-        .g=0,
-        .b=0,
-        .a=195
-    }
+        },
+        (Color) {
+            .r=0,
+            .g=0,
+            .b=0,
+            .a=195
+        }
     );
     DrawRectangleRounded((Rectangle) {
         .height=GetScreenHeight() * 0.90,
@@ -106,4 +106,21 @@ void    sellMenuDisplay(void)
     10,
     GRAY
     );
+    DrawLineEx((Vector2) { .x=GetScreenHeight() * 0.825, .y=GetScreenHeight() * 0.10 }, (Vector2) { .x=GetScreenHeight() * 0.825, .y=GetScreenHeight() * 0.9 }, GetScreenHeight() / 256, BLACK);
+    
+    char count[16];
+
+    for (int i = 0;; i++)
+    {
+        if (!player->inv->inv || !player->inv->inv[i])
+            break;
+        DrawText(player->inv->inv[i]->name, GetScreenWidth() * 0.1 , GetScreenHeight() * (0.14 + i * 0.05), GetScreenHeight() * 0.04, DARKGRAY);
+        sprintf(count, "%d", player->inv->counts[i]);
+        DrawText(count, GetScreenWidth() * 0.45 - (strlen(count) - 1) * 0.04 * GetScreenHeight(), GetScreenHeight() * (0.14 + i * 0.05), GetScreenHeight() * 0.04, DARKGRAY);
+        sprintf(count, "%d", player->inv->inv[i]->value);
+        DrawText(count, GetScreenHeight() * 0.84, GetScreenHeight() * (0.14 + i * 0.05), GetScreenHeight() * 0.04, DARKGREEN);
+        sprintf(count, "x%d", player->money_multiplier);
+        DrawText(count, GetScreenHeight() * 0.84, GetScreenHeight() * (0.14 + i * 0.05), GetScreenHeight() * 0.04, DARKGREEN);
+    }
+
 }

@@ -39,7 +39,7 @@ void    displayHandler(player_data *player)
         }
         if (player->gameState == SELLMENU)
         {
-            sellMenuDisplay();
+            sellMenuDisplay(player);
         }
         displayButtons(GetMousePosition());
         DrawFPS(0, 0);
