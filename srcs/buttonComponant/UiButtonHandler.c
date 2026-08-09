@@ -261,10 +261,11 @@ void    refreshButtonName(char *name, Vector2 cursorPos)
     }
 }
     
-    /*
+/*
 
     check if click is on an active Button then exec Button's job
-
+    if 2 buttons are clicked at the exact same time only the first one found will be clicked
+    
 */
 void    executeClicks(Vector2 clickPos)
 {
@@ -280,6 +281,7 @@ void    executeClicks(Vector2 clickPos)
                 clickPos.y < Buttons->btnsPtr[i]->collRect.y + Buttons->btnsPtr[i]->collRect.height)
             {
                 Buttons->btnsPtr[i]->action(Buttons->btnsPtr[i]->clickDependency);
+                break;
             }
         }
     }

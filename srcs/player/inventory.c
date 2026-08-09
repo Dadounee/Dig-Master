@@ -63,29 +63,20 @@ void    InventoryAdd(player_data *player, int minedX, int minedY)
     player->inv->oreCount++;
 }
 
-void SellInventory(player_data *player)
-{
-    int i = 0;
-    int count = 0;
-
-    while (count < player->inv->oreCount)
-    {
-        player->money += player->money_multiplier * player->inv->inv[i]->value * player->inv->counts[i];
-        count += player->inv->counts[i];
-        i++;
-    }
-    free(player->inv->inv);
-    free(player->inv->counts);
-}
-
-    // typedef void    clickAction(void *infos);
-    // typedef void    displayFunction(void *infos, void *infos2, bool isHovered);
-
 void    invButtonClick(void *infos)
 {
     player_data *player = (player_data *)infos;
 
-    player->gameState = INVENTORY;
+    if (player->gameState == INVENTORY)
+    {
+        player->gameState = MINING;
+        changeButtonStateName("returnBackButton", DISABLED);
+    }    
+    else
+    {
+        player->gameState = INVENTORY;
+        changeButtonStateName("returnBackButton", ACTIVE);
+    }
 }
 
 void    invButtonDisplay(void *infos, void *infos2, bool isHovered)
@@ -96,32 +87,112 @@ void    invButtonDisplay(void *infos, void *infos2, bool isHovered)
     if (!isHovered)
     {
         DrawRectangleRounded((Rectangle) {
-            .height=GetScreenHeight() / 10,
-            .width=GetScreenHeight() / 10,
-            .x=GetScreenWidth() / 1.1f,
-            .y=GetScreenHeight() / 32
+            .height=GetScreenHeight() * 0.1,
+            .width=GetScreenHeight() * 0.1,
+            .x=GetScreenWidth() * 0.91,
+            .y=GetScreenHeight() * 0.03125
         },
         0.1f,
         5,
         DARKBLUE
-    );
+        );
     }
     else
     {
         DrawRectangleRounded((Rectangle) {
-            .height=GetScreenHeight() / 10,
-            .width=GetScreenHeight() / 10,
-            .x=GetScreenWidth() / 1.1f,
-            .y=GetScreenHeight() / 32
+            .height=GetScreenHeight() * 0.1,
+            .width=GetScreenHeight() * 0.1,
+            .x=GetScreenWidth() * 0.91,
+            .y=GetScreenHeight() * 0.03125
         },
         0.1f,
         5,
         BLUE
-    );
+        );
     }
+    DrawText("wpnInv\nButton",
+    GetScreenWidth() / 1.1f,
+    GetScreenHeight() / 32,
+    GetScreenHeight() * 0.02,
+    BLACK
+    );
 }
 
 void    inventoryDisplay(void)
 {
+    DrawRectangleRec((Rectangle) {
+        .height=GetScreenHeight(),
+        .width=GetScreenWidth(),
+        .x=0,
+        .y=0
+    },
+    (Color) {
+        .r=0,
+        .g=0,
+        .b=0,
+        .a=195
+    }
+    );
+    DrawRectangleRounded((Rectangle) {
+        .height=GetScreenHeight() * 0.90,
+        .width=GetScreenWidth() * 0.85,
+        .x=GetScreenHeight() * 0.05,
+        .y=GetScreenHeight() * 0.05
+    },
+    0.05f,
+    10,
+    GRAY
+    );
+}
 
+void    returnBtnDisplay(void *infos, void *infos2, bool isHovered)
+{
+    (void)infos;
+    (void)infos2;
+    
+    if (!isHovered)
+    {
+        DrawRectangleRounded((Rectangle) {
+            .height=GetScreenHeight() * 0.05,
+            .width=GetScreenHeight() * 0.05,
+            .x=GetScreenWidth() * 0.85,
+            .y=GetScreenHeight() * 0.05
+        },
+        0.1f,
+        5,
+        RED
+        );
+    }
+    else
+    {
+        DrawRectangleRounded((Rectangle) {
+            .height=GetScreenHeight() * 0.05,
+            .width=GetScreenHeight() * 0.05,
+            .x=GetScreenWidth() * 0.85,
+            .y=GetScreenHeight() * 0.05
+        },
+        0.1f,
+        5,
+        (Color) {
+            .r=236,
+            .g=74,
+            .b=76,
+            .a=255
+        }
+        );
+    }
+    DrawText("rtn\nButton",
+        GetScreenWidth() * 0.85,
+        GetScreenHeight() * 0.05,
+        GetScreenHeight() * 0.01,
+        BLACK
+    );
+}
+
+void    returnBtnClick(void *infos)
+{
+    player_data *player = (player_data *)infos;
+
+    player->gameState = MINING;
+    changeButtonStateName("returnBackButton", DISABLED);
 }

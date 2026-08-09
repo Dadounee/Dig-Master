@@ -25,7 +25,6 @@ void first_weapons(player_data *player);
 
 player_data *player_init(void);
 void        player_free(player_data *player);
-void        changeState(player_data *player);
 
 
 /*
@@ -40,6 +39,7 @@ void        equip_pickaxe(player_data *player, pickaxe *pick);
 /*
     UI FUNCS
 */
+void    sellMenuDisplay(void);
 void    inventoryDisplay(void);
 
 #endif

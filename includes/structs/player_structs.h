@@ -14,7 +14,8 @@
 
     typedef enum s_game_state {
         MINING,
-        INVENTORY
+        INVENTORY,
+        SELLMENU
     } gameState;
 
     typedef struct s_p_inv

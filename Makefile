@@ -19,7 +19,8 @@ WEAPNS_SRCS = srcs/weapons/pickaxe_radius.c \
 			srcs/weapons/boots.c
 
 PLAYER_SRCS = srcs/player/player.c \
-			srcs/player/inventory.c
+			srcs/player/inventory.c \
+			srcs/player/sellMenu.c
 
 OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o) $(MAP_SRCS:%.c=$(OBJ_DIR)/%.o) $(WEAPNS_SRCS:%.c=$(OBJ_DIR)/%.o) $(PLAYER_SRCS:%.c=$(OBJ_DIR)/%.o)
 RAYLIB		= libs/raylib/src/libraylib.a
@@ -35,7 +36,7 @@ LIBS		= -L./libs/raylib/src \
 			-lX11
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -g -I./includes -I$(RAYLIB_DIR) -o3
+CFLAGS		= -Wall -Wextra -g -I./includes -I$(RAYLIB_DIR) -O2
 
 all: $(RAYLIB) $(NAME)
 

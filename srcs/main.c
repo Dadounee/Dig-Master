@@ -6,7 +6,10 @@ void    buttonCreation(player_data *player)
 {
     clearButtons();
 
-    createButton("inventoryButton", invButtonClick, invButtonDisplay, (Rectangle){ .height=GetScreenHeight() / 10, .width=GetScreenHeight() / 10, .x=GetScreenWidth() / 1.1, .y=GetScreenHeight() / 32 }, player, NULL, NULL, true);
+    createButton("inventoryButton", invButtonClick, invButtonDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.1, .x=GetScreenWidth() * 0.91, .y=GetScreenHeight() * 0.03125}, player, NULL, NULL, true);
+    createButton("sellButton", sellButtonClick, sellButtonDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.1, .x=GetScreenWidth() * 0.91, .y=GetScreenHeight() * 0.1625}, player, NULL, NULL, true);
+    createButton("returnBackButton", returnBtnClick, returnBtnDisplay, (Rectangle) { .height=GetScreenHeight() * 0.05, .width=GetScreenHeight() * 0.05, .x=GetScreenWidth() * 0.85, .y=GetScreenHeight() * 0.05}, player, NULL, NULL, true);
+    changeButtonStateName("returnBackButton", DISABLED);
 }
 
 void    eventHandler(player_data *player)
@@ -16,8 +19,6 @@ void    eventHandler(player_data *player)
         click_mining(player, 1.0f);
         executeClicks(GetMousePosition());
     }
-    if (player->gameState != player->oldState)
-        changeState(player);
 }
 
 void    displayHandler(player_data *player)
@@ -25,16 +26,20 @@ void    displayHandler(player_data *player)
     BeginDrawing();
 
         ClearBackground(GRAY);
+        DisplayPlayerInfos(player, 1.0f);
+        DisplayPlayerInv(player, 1.0f);
         if (player->gameState == MINING && player->display_actualisation)
         {
             DisplayMap(player->actual_zone, 1.0f, player->inv->inv_size <= player->inv->oreCount);
             tile_info(&player->actual_zone->mine_map, 1.0f);
-            DisplayPlayerInfos(player, 1.0f);
-            DisplayPlayerInv(player, 1.0f);
         }
-        if ( player->gameState == INVENTORY)
+        if (player->gameState == INVENTORY)
         {
             inventoryDisplay();
+        }
+        if (player->gameState == SELLMENU)
+        {
+            sellMenuDisplay();
         }
         displayButtons(GetMousePosition());
         DrawFPS(0, 0);

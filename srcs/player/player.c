@@ -134,18 +134,6 @@ void    equip_pickaxe(player_data *player, pickaxe *pick)
     player->mining_str += player->equipped_weapons.pickaxe->mining_str;
 }
 
-void    changeState(player_data *player)
-{
-    if (player->gameState == MINING)
-    {
-
-    }
-    else if (player->gameState == INVENTORY)
-    {
-        changeButtonStateName("inventoryButton", DISABLED);
-    }
-}
-
 // void swap_armor(player_data *player, armor *new_armor)
 // {
 //     armor temp = *new_armor;
