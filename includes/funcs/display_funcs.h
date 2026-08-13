@@ -18,6 +18,7 @@
     void    returnBtnDisplay(void *infos, void *infos2, bool isHovered);
     void    sellButtonClick(void *infos);
     void    sellButtonDisplay(void *infos, void *infos2, bool isHovered);
-
+    void    sellInvClick(void *infos);
+    void    sellInvDisplay(void *infos, void *infos2, bool isHovered);
 
 #endif

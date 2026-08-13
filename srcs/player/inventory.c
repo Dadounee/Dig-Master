@@ -193,6 +193,8 @@ void    returnBtnClick(void *infos)
 {
     player_data *player = (player_data *)infos;
 
-    player->gameState = MINING;
     changeButtonStateName("returnBackButton", DISABLED);
+    if (player->gameState == SELLMENU)
+        changeButtonStateName("sellInvButton", DISABLED);
+    player->gameState = MINING;
 }

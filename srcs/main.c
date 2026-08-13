@@ -9,7 +9,10 @@ void    buttonCreation(player_data *player)
     createButton("inventoryButton", invButtonClick, invButtonDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.1, .x=GetScreenWidth() * 0.91, .y=GetScreenHeight() * 0.03125}, player, NULL, NULL, true);
     createButton("sellButton", sellButtonClick, sellButtonDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.1, .x=GetScreenWidth() * 0.91, .y=GetScreenHeight() * 0.1625}, player, NULL, NULL, true);
     createButton("returnBackButton", returnBtnClick, returnBtnDisplay, (Rectangle) { .height=GetScreenHeight() * 0.05, .width=GetScreenHeight() * 0.05, .x=GetScreenWidth() * 0.85, .y=GetScreenHeight() * 0.05}, player, NULL, NULL, true);
+    createButton("sellInvButton", sellInvClick, sellInvDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.2, .x=GetScreenWidth() * 0.75, .y=GetScreenHeight() * 0.825}, player, NULL, NULL, true);
+    
     changeButtonStateName("returnBackButton", DISABLED);
+    changeButtonStateName("sellInvButton", DISABLED);
 }
 
 void    eventHandler(player_data *player)
