@@ -11,6 +11,7 @@
 # define BASE_LUCK 1
 # define BASE_MONEY 0
 # define BASE_MULT 1
+# define BASE_STAMINA 100
 
     typedef enum s_game_state {
         MINING,
@@ -50,8 +51,35 @@
 
     } weapons;
 
+    typedef struct s_player_statistics
+    {
+        unsigned int    exp;
+        unsigned int    level;
+        unsigned int    dayCount;
+        
+        unsigned short  baseStaBoost;
+        unsigned int    multStaBoost;
+        
+        unsigned short  baseHpBoost;
+        unsigned int    multHpBoost;
+        
+        unsigned short  baseDefBoost;
+        unsigned int    multDefBoost;
+        
+        unsigned short  baseStrBoost;
+        unsigned int    multStrBoost;
+        
+        unsigned short  baseLuckBoost;
+        unsigned int    multLuckBoost;
+        
+        unsigned short  baseSpeedBoost;
+        unsigned int    multSpeedBoost;
+        
+        unsigned int    moneyMult;
+        
+    } statistics;
 
-    typedef struct s_player_data
+    typedef struct s_playerData
     {
         zone                *actual_zone;
         weapons             equipped_weapons;
@@ -68,20 +96,15 @@
         int                 def;
         int                 str;
         int                 speed;
-        int                 mining_str;
-        int                 mining_sta;
-        int                 actual_sta;
-        int                 luck_mult;
-        int                 money_multiplier;
+        int                 miningStr;
+        int                 actualSta;
+        int                 luck;
 
         bool                display_actualisation;
         unsigned char       oldState;
         unsigned char       gameState;
-    } player_data;
-
-    typedef struct s_player_statistics
-    {
-        int     exp;
-    } statistics;
+        
+        statistics          playerStats;
+    } playerData;
 
 #endif

@@ -6,9 +6,9 @@
 
     // ui display funcs
     void    DisplayMap(zone *infos, float scale, int blocked);
-    void    DisplayPlayerInv(player_data *player, float scale);
-    void    DisplayPlayerInfos(player_data *player, float scale);
-    void    sellMenuDisplay(player_data *player);
+    void    DisplayPlayerInv(playerData *player, float scale);
+    void    DisplayPlayerInfos(playerData *player, float scale);
+    void    sellMenuDisplay(playerData *player);
     void    inventoryDisplay(void);
 
     // button creation related functions here

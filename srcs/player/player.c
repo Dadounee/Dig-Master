@@ -5,7 +5,7 @@
     INVENTORY INIT RELATED STUFF
 */
 
-void armor_inventory_init(player_data *player)
+void armor_inventory_init(playerData *player)
 {
     player->weapons_inv = malloc(sizeof(weapons_inventory));
     player->weapons_inv->inv_size = 5;
@@ -13,7 +13,7 @@ void armor_inventory_init(player_data *player)
     player->weapons_inv->inv = malloc(player->inv->inv_size * sizeof(armor *));
 }
 
-void inventories_free(player_data *player)
+void inventories_free(playerData *player)
 {
     free(player->weapons_inv->inv);
     free(player->weapons_inv);
@@ -23,7 +23,7 @@ void inventories_free(player_data *player)
     WEAPON INIT RELATED STUFF
 */
 
-void first_weapons(player_data *player)
+void first_weapons(playerData *player)
 {
     int     i = 0;
 
@@ -52,36 +52,29 @@ void first_weapons(player_data *player)
     PLAYER INIT RELATED STUFF
 */
 
-player_data *player_init(void)
+playerData *player_init(void)
 {
-    static player_data player;
+    static playerData player;
     
+    player.miningStr = 0;
+
     inventory_init(&player);
+    initPlayerStats(&player);
+    first_weapons(&player);
+    applyPlayerStats(&player);
     armor_inventory_init(&player);
     
     player.actual_zone = z_surface();
-    
-    player.hp = BASE_HP;
-    player.def = BASE_DEF;
-    player.str = BASE_STR;
-    player.speed = BASE_SPEED;
-    player.luck_mult = BASE_LUCK;
-    player.money = BASE_MONEY;
-    player.money_multiplier = BASE_MULT;
 
-    player.mining_sta = 0;
-    player.mining_str = 0;
-    player.actual_sta = 0;
     player.oldState = MINING;
     player.gameState = MINING;
 
-    first_weapons(&player);
     
     player.display_actualisation = true;
     return (&player);
 }
 
-void player_free(player_data *player)
+void player_free(playerData *player)
 {
     OreInventoryFree(player->inv);
     inventories_free(player);
@@ -99,20 +92,20 @@ void add_armor(weapons_inventory *w_inv, armor *armor)
     w_inv->count++;
 }
 
-void add_armor_stats(player_data *player, armor *ar)
+void add_armor_stats(playerData *player, armor *ar)
 {
     player->hp += ar->hp;
     player->str += ar->str;
     player->speed += ar->speed;
-    player->mining_str += ar->mining_str;
+    player->miningStr += ar->miningStr;
 }
 
-void rem_armor_stats(player_data *player, armor *ar)
+void rem_armor_stats(playerData *player, armor *ar)
 {
     player->hp -= ar->hp;
     player->str -= ar->str;
     player->speed -= ar->speed;
-    player->mining_str -= ar->mining_str;
+    player->miningStr -= ar->miningStr;
 }
 
 void first_equip_w_inv(weapons_inventory *w_inv)
@@ -121,20 +114,93 @@ void first_equip_w_inv(weapons_inventory *w_inv)
 }
 
 
-void    equip_pickaxe(player_data *player, pickaxe *pick)
+void    equip_pickaxe(playerData *player, pickaxe *pick)
 {
     if (player->equipped_weapons.pickaxe != NULL)
-    {
-        player->mining_sta -= player->equipped_weapons.pickaxe->mining_sta;
-        player->mining_str -= player->equipped_weapons.pickaxe->mining_str;
-    }
+        player->playerStats.baseStrBoost -= player->equipped_weapons.pickaxe->miningStr;
     
     player->equipped_weapons.pickaxe = pick;
-    player->mining_sta += player->equipped_weapons.pickaxe->mining_sta;
-    player->mining_str += player->equipped_weapons.pickaxe->mining_str;
+    player->playerStats.baseStrBoost += player->equipped_weapons.pickaxe->miningStr;
 }
 
-// void swap_armor(player_data *player, armor *new_armor)
+/*
+
+    init stat part
+
+*/
+
+void    initPlayerStats(playerData *player)
+{
+    player->playerStats.exp = 0;
+    player->playerStats.level = 0;
+    
+    player->playerStats.dayCount = 0;
+
+    player->playerStats.moneyMult = BASE_MULT;
+
+    player->playerStats.baseHpBoost = BASE_HP;
+    player->playerStats.multHpBoost = 1;
+
+    player->playerStats.baseStaBoost = BASE_STAMINA;
+    player->playerStats.multStaBoost = 1;
+
+    player->playerStats.baseDefBoost = BASE_DEF;
+    player->playerStats.multDefBoost = 1;
+
+    player->playerStats.baseStrBoost = 0;
+    player->playerStats.multStrBoost = 1;
+
+    player->playerStats.baseLuckBoost = BASE_LUCK;
+    player->playerStats.multLuckBoost = 1;
+
+    player->playerStats.baseSpeedBoost = BASE_SPEED;
+    player->playerStats.multSpeedBoost = 1;
+    
+}
+
+void    applyPlayerStats(playerData *player)
+{
+    player->hp = player->playerStats.baseHpBoost * player->playerStats.multHpBoost;
+    player->def = player->playerStats.baseDefBoost * player->playerStats.multDefBoost;
+    player->luck = player->playerStats.baseLuckBoost * player->playerStats.multLuckBoost;
+    player->speed = player->playerStats.baseSpeedBoost * player->playerStats.multSpeedBoost;
+    player->miningStr = player->playerStats.baseStrBoost * player->playerStats.multStrBoost;
+    player->actualSta = player->playerStats.baseStaBoost * player->playerStats.multStaBoost;
+    printf("hp:%d\ndef:%d\nstr:%d\n", player->hp, player->def, player->miningStr);
+}
+
+/*
+    stat: 0.hp 1.sta 2.def 3.str 4.luck 5.speed
+*/
+void    applyOnePlayerStats(playerData *player, unsigned char stat)
+{
+    switch (stat)
+    {
+        case 0:
+            player->hp = player->playerStats.baseHpBoost * player->playerStats.multHpBoost;
+            break;
+        case 1:
+            player->actualSta = player->playerStats.baseStaBoost * player->playerStats.multStaBoost;
+            break;
+        case 2:
+            player->def = player->playerStats.baseDefBoost * player->playerStats.multDefBoost;
+            break;
+        case 3:
+            player->miningStr = player->playerStats.baseStrBoost * player->playerStats.multStrBoost;
+            break;
+        case 4:
+            player->luck = player->playerStats.baseLuckBoost * player->playerStats.multLuckBoost;
+            break;
+        case 5:
+            player->speed = player->playerStats.baseSpeedBoost * player->playerStats.multSpeedBoost;
+            break;
+        
+        default:
+            break;
+    }
+
+}
+// void swap_armor(playerData *player, armor *new_armor)
 // {
 //     armor temp = *new_armor;
 
@@ -142,7 +208,7 @@ void    equip_pickaxe(player_data *player, pickaxe *pick)
 //     *old_armor = temp;
 // }
 
-// void equip_armor(player_data *player, armor *ar)
+// void equip_armor(playerData *player, armor *ar)
 // {
 //     switch (ar->slot)
 //     {
@@ -179,7 +245,7 @@ void    equip_pickaxe(player_data *player, pickaxe *pick)
 //         rem_armor_stats(player, *ar);
 // }
 
-// void unequip_armor(player_data *player, int slot)
+// void unequip_armor(playerData *player, int slot)
 // {
 
 //     switch (slot)
@@ -209,7 +275,7 @@ void    equip_pickaxe(player_data *player, pickaxe *pick)
 //     }
 // }
 
-// void display_equipped_armors(player_data *player)
+// void display_equipped_armors(playerData *player)
 // {
 //     int i = -1;
 
@@ -233,7 +299,7 @@ void    equip_pickaxe(player_data *player, pickaxe *pick)
 
 // }
 
-// void drop_s_equipped(player_data *player, int slot)
+// void drop_s_equipped(playerData *player, int slot)
 // {
 //     switch (slot)
 //     {

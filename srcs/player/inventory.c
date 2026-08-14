@@ -1,7 +1,7 @@
 #include "includes.h"
 #include "libs.h"
 
-void inventory_init(player_data *player)
+void inventory_init(playerData *player)
 {
     player->inv = malloc(sizeof(p_inventory));
     player->inv->inv_size = 5;
@@ -22,7 +22,7 @@ void    OreInventoryFree(p_inventory *inv)
     Adds an element to the player inventory, DOES NOT PERFORM FULLNESS CHECKS (will add evenn if full)
 
 */
-void    InventoryAdd(player_data *player, int minedX, int minedY)
+void    InventoryAdd(playerData *player, int minedX, int minedY)
 {
     ore *mined = { 0 };
     ore **oreList = get_ores();
@@ -65,7 +65,7 @@ void    InventoryAdd(player_data *player, int minedX, int minedY)
 
 void    invButtonClick(void *infos)
 {
-    player_data *player = (player_data *)infos;
+    playerData *player = (playerData *)infos;
 
     if (player->gameState == INVENTORY)
     {
@@ -191,7 +191,7 @@ void    returnBtnDisplay(void *infos, void *infos2, bool isHovered)
 
 void    returnBtnClick(void *infos)
 {
-    player_data *player = (player_data *)infos;
+    playerData *player = (playerData *)infos;
 
     changeButtonStateName("returnBackButton", DISABLED);
     if (player->gameState == SELLMENU)

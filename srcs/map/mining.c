@@ -1,7 +1,7 @@
 #include "includes.h"
 #include "libs.h"
 
-void    click_mining(player_data *player, float scale)
+void    click_mining(playerData *player, float scale)
 {
     int     tile_size = scale * GetScreenWidth() / TILE_PROPORTION;
     int     offset_x  = (GetScreenWidth() - (tile_size + 1) * player->actual_zone->mine_map.map_len) / 2;
@@ -19,18 +19,18 @@ void    click_mining(player_data *player, float scale)
     pick_radius(&player->actual_zone->mine_map, click_x, click_y, player->equipped_weapons.pickaxe->radius + 2);
     if (player->actual_zone->mine_map.map[click_y][click_x].durability > 0)
     {
-        player->actual_zone->mine_map.map[click_y][click_x].durability -= player->mining_str;
+        player->actual_zone->mine_map.map[click_y][click_x].durability -= player->miningStr;
         if (player->actual_zone->mine_map.map[click_y][click_x].durability <= 0)
         {
             player->actual_zone->mine_map.map[click_y][click_x].durability = 0;
             InventoryAdd(player, click_x, click_y);
         }
-        player->actual_sta--;
+        player->actualSta--;
     }
-    if (player->actual_sta <= 0)
+    if (player->actualSta <= 0)
     {
         map_free(&player->actual_zone->mine_map);
         map_gen(player->actual_zone);
-        player->actual_sta = player->mining_sta;
+        applyOnePlayerStats(player, 1);
     }
 }

@@ -1,14 +1,14 @@
 #include "includes.h"
 #include "libs.h"
 
-void SellInventory(player_data *player)
+void SellInventory(playerData *player)
 {
     int i = 0;
     int count = 0;
 
     while (count < player->inv->oreCount)
     {
-        player->money += player->money_multiplier * player->inv->inv[i]->value * player->inv->counts[i];
+        player->money += player->playerStats.moneyMult * player->inv->inv[i]->value * player->inv->counts[i];
         count += player->inv->counts[i];
         i++;
     }
@@ -27,7 +27,7 @@ void SellInventory(player_data *player)
 
 void    sellButtonClick(void *infos)
 {
-    player_data *player = (player_data *)infos;
+    playerData *player = (playerData *)infos;
 
     if (player->gameState == SELLMENU)
     {
@@ -89,7 +89,7 @@ void    sellButtonDisplay(void *infos, void *infos2, bool isHovered)
     display things
 */
 
-void    sellMenuDisplay(player_data *player)
+void    sellMenuDisplay(playerData *player)
 {
     DrawRectangleRec((Rectangle) {
         .height=GetScreenHeight(),
@@ -133,17 +133,17 @@ void    sellMenuDisplay(player_data *player)
         DrawText(count, GetScreenHeight() * (0.88 - (strlen(count) - 1) * 0.04), GetScreenHeight() * (0.14 + i * 0.04), GetScreenHeight() * 0.04, DARKGRAY);
         sprintf(count, "%d", player->inv->inv[i]->value);
         DrawText(count, GetScreenHeight() * 1.06, GetScreenHeight() * (0.14 + i * 0.04), GetScreenHeight() * 0.04, DARKGREEN);
-        sprintf(count, "=%d", player->money_multiplier * player->inv->inv[i]->value * player->inv->counts[i]);
+        sprintf(count, "=%d", player->playerStats.moneyMult * player->inv->inv[i]->value * player->inv->counts[i]);
         DrawText(count, GetScreenHeight() * 1.14, GetScreenHeight() * (0.14 + i * 0.04), GetScreenHeight() * 0.04, GREEN);
     }
-    sprintf(count, "x%d", player->money_multiplier);
+    sprintf(count, "x%d", player->playerStats.moneyMult);
     DrawText(count, GetScreenHeight() * 1.06, GetScreenHeight() * 0.9, GetScreenHeight() * 0.04, DARKGRAY);
 
 }
 
 void    sellInvClick(void *infos)
 {
-    player_data *player = (player_data *)infos;
+    playerData *player = (playerData *)infos;
 
     SellInventory(player);
     changeButtonStateName("sellInvButton", DEACTIVATED);

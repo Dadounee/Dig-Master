@@ -6,7 +6,7 @@
 
 ## Known bugs
 
-* no known bugs for now code leak and crash free, tested
+* no known bugs for now code leaks and crashes free, tested
 
 ## 1. Features
 
@@ -23,15 +23,29 @@
 
 ## 2. To Do Next
 
+> 0. [ ] stats system rework + stat tracking
+>
 > 1. [ ] new stamina system (days, sleep etc)
 >
 > 2. [ ] fight system
+>
+> 3. [ ] map system with differents zones and shops (move requires sta)
+>
+> 4. [ ] event system on move or ore sell etc
+>
+> 5. [ ] upgrade tree
+>
+> 6. [ ] game modes
+>    | casu
+>    | daily objectives (implies diff gamemodes)
 >
 > 3. [ ] crate and random drop system
 >
 > 4. [ ] rework button system
 >
-> 4. [ ] ui and ux improvement
+> 5. [ ] ui and ux improvement
+>
+> 6. [ ] animations
 
 
 ## 3. Rework

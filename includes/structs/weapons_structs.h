@@ -16,8 +16,8 @@ typedef struct s_pickaxe
 {
     char *name;
 
-    int mining_str;
-    int mining_sta;
+    int miningStr;
+    int miningCost;
     int cost;
 
     int *effects;
@@ -31,8 +31,8 @@ typedef struct s_armor
     int     hp;
     int     str;
     int     speed;
-    int     mining_str;
-    int     mining_sta;
+    int     miningStr;
+    int     staminaBoost;
 
     int     *effects;
     int     slot;

@@ -6,8 +6,8 @@ pickaxe *p_fists(void)
     static pickaxe pick = {
         .name = "Fists",
         .cost = 0,
-        .mining_str = 1,
-        .mining_sta = 5,
+        .miningStr = 1,
+        .miningCost = 1,
         .effects = 0,
         .radius = 1
     };
@@ -20,8 +20,8 @@ pickaxe *p_stick(void)
     static pickaxe pick = {
         .name = "Stick",
         .cost = 20,
-        .mining_str = 2,
-        .mining_sta = 6,
+        .miningStr = 2,
+        .miningCost = 1,
         .effects = 0,
         .radius = 1
     };
@@ -34,8 +34,8 @@ pickaxe *p_wooden_pickaxe(void)
     static pickaxe pick = {
         .name = "Wooden Pickaxe",
         .cost = 150,
-        .mining_str = 3,
-        .mining_sta = 10,
+        .miningStr = 3,
+        .miningCost = 1,
         .effects = 0,
         .radius = 2
     };
@@ -48,8 +48,8 @@ pickaxe *p_wooden_hammer(void)
     static pickaxe pick = {
         .name = "Wooden Hammer",
         .cost = 650,
-        .mining_str = 8,
-        .mining_sta = 10,
+        .miningStr = 8,
+        .miningCost = 1,
         .effects = 0,
         .radius = 1
     };
@@ -62,8 +62,8 @@ pickaxe *p_stone_pickaxe(void)
     static pickaxe pick = {
         .name = "Stone Pickaxe",
         .cost = 1500,
-        .mining_str = 15,
-        .mining_sta = 12,
+        .miningStr = 15,
+        .miningCost = 1,
         .effects = 0,
         .radius = 2
     };
@@ -76,8 +76,8 @@ pickaxe *p_iron_pickaxe(void)
     static pickaxe pick = {
         .name = "Iron Pickaxe",
         .cost = 5000,
-        .mining_str = 25,
-        .mining_sta = 16,
+        .miningStr = 25,
+        .miningCost = 1,
         .effects = 0,
         .radius = 2
     };
@@ -90,8 +90,8 @@ pickaxe *p_golden_pickaxe(void)
     static pickaxe pick = {
         .name = "Golden Pickaxe",
         .cost = 20000,
-        .mining_str = 60,
-        .mining_sta = 20,
+        .miningStr = 60,
+        .miningCost = 1,
         .effects = 0,
         .radius = 2
     };
@@ -104,8 +104,8 @@ pickaxe *p_diamond_pickaxe(void)
     static pickaxe pick = {
         .name = "Diamond Pickaxe",
         .cost = 100000,
-        .mining_str = 100,
-        .mining_sta = 18,
+        .miningStr = 100,
+        .miningCost = 1,
         .effects = 0,
         .radius = 3
     };
@@ -118,8 +118,8 @@ pickaxe *p_electric_pickaxe(void)
     static pickaxe pick = {
         .name = "Electric Pickaxe",
         .cost = 250000,
-        .mining_str = 180,
-        .mining_sta = 18,
+        .miningStr = 180,
+        .miningCost = 1,
         .effects = 0,
         .radius = 4
     };
@@ -132,8 +132,8 @@ pickaxe *p_abyss_pickaxe(void)
     static pickaxe pick = {
         .name = "Abyss Pickaxe",
         .cost = 1000000,
-        .mining_str = 310,
-        .mining_sta = 24,
+        .miningStr = 310,
+        .miningCost = 1,
         .effects = 0,
         .radius = 3
     };

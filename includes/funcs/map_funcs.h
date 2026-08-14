@@ -6,6 +6,6 @@
 
 void    map_free(map *map);
 void    map_gen(zone *actual_zone);
-void    click_mining(player_data *player, float scale);
+void    click_mining(playerData *player, float scale);
 
 #endif

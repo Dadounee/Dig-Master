@@ -140,7 +140,7 @@ void    tile_info(map *mine_map, float scale)
     }
 }
 
-void    DisplayPlayerInfos(player_data *player, float scale)
+void    DisplayPlayerInfos(playerData *player, float scale)
 {
     char str[16];
 
@@ -162,13 +162,13 @@ void    DisplayPlayerInfos(player_data *player, float scale)
             .y=GetScreenHeight() - GetScreenHeight() / 5.5 * scale
         },
         GetScreenHeight() / 32, GetScreenWidth() / 5.5, 1.0f,
-        player->actual_sta / (float)player->mining_sta
+        player->actualSta / (float)(player->playerStats.baseStaBoost * player->playerStats.multStaBoost)
     );
-    sprintf(str, "%d/%d", player->actual_sta, player->mining_sta);
+    sprintf(str, "%d/%d", player->actualSta, player->playerStats.baseStaBoost * player->playerStats.multStaBoost);
     DrawText(str, GetScreenHeight() / 24 + 2, GetScreenHeight() - GetScreenHeight() / 5.5 * scale + 2, GetScreenHeight() / 67.5, BLACK);
     
     DrawText("Strength:", GetScreenHeight() / 15, GetScreenHeight() - GetScreenHeight() / 8 * scale, GetScreenHeight() / 45, BLACK);
-    sprintf(str, "%d", player->mining_str);
+    sprintf(str, "%d", player->miningStr);
     DrawText(str, GetScreenHeight() / 15 + GetScreenHeight() / 5, GetScreenHeight() - GetScreenHeight() / 8 * scale, GetScreenHeight() / 45, BLACK);
     
     DrawText("Money:", GetScreenHeight() / 15, GetScreenHeight() - GetScreenHeight() / 8 * scale + GetScreenHeight() / 45, GetScreenHeight() / 45, BLACK);
@@ -176,7 +176,7 @@ void    DisplayPlayerInfos(player_data *player, float scale)
     DrawText(str, GetScreenHeight() / 15 + GetScreenHeight() / 5, GetScreenHeight() - GetScreenHeight() / 8 * scale + GetScreenHeight() / 45, GetScreenHeight() / 45, BLACK);
 }
 
-void    DisplayPlayerInv(player_data *player, float scale)
+void    DisplayPlayerInv(playerData *player, float scale)
 {
     char    capacity[16];
 

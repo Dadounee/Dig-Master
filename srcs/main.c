@@ -2,7 +2,7 @@
 #include "raylib.h"
 #include "includes.h"
 
-void    buttonCreation(player_data *player)
+void    buttonCreation(playerData *player)
 {
     clearButtons();
 
@@ -10,12 +10,13 @@ void    buttonCreation(player_data *player)
     createButton("sellButton", sellButtonClick, sellButtonDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.1, .x=GetScreenWidth() * 0.91, .y=GetScreenHeight() * 0.1625}, player, NULL, NULL, true);
     createButton("returnBackButton", returnBtnClick, returnBtnDisplay, (Rectangle) { .height=GetScreenHeight() * 0.05, .width=GetScreenHeight() * 0.05, .x=GetScreenWidth() * 0.85, .y=GetScreenHeight() * 0.05}, player, NULL, NULL, true);
     createButton("sellInvButton", sellInvClick, sellInvDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.2, .x=GetScreenWidth() * 0.75, .y=GetScreenHeight() * 0.825}, player, NULL, NULL, true);
+    // createButton("sleepButton", sellInvClick, sellInvDisplay, (Rectangle) { .height=GetScreenHeight() * 0.1, .width=GetScreenHeight() * 0.2, .x=GetScreenWidth() * 0.85, .y=GetScreenHeight() * 0.85}, player, NULL, NULL, true);
     
     changeButtonStateName("returnBackButton", DISABLED);
     changeButtonStateName("sellInvButton", DISABLED);
 }
 
-void    eventHandler(player_data *player)
+void    eventHandler(playerData *player)
 {
     if (IsMouseButtonPressed(0))
     {
@@ -24,7 +25,7 @@ void    eventHandler(player_data *player)
     }
 }
 
-void    displayHandler(player_data *player)
+void    displayHandler(playerData *player)
 {
     BeginDrawing();
 
@@ -52,7 +53,7 @@ void    displayHandler(player_data *player)
 
 int main(void)
 {
-    player_data *player = player_init();
+    playerData *player = player_init();
 
     InitWindow(1920, 1080, "DigMaster");
     const int screenWidth = GetScreenWidth();
@@ -62,7 +63,6 @@ int main(void)
     buttonCreation(player);
     
     map_gen(player->actual_zone);
-    player->actual_sta = player->mining_sta;
 
     SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
     while (!WindowShouldClose())

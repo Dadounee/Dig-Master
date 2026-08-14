@@ -9,8 +9,8 @@ armor *c_broken(void)
         .hp = 1,
         .str = 0,
         .speed = 0,
-        .mining_sta = 0,
-        .mining_str = 0,
+        .staminaBoost = 0,
+        .miningStr = 0,
         .rarity = common
     };
 
@@ -25,8 +25,8 @@ armor *c_training(void)
         .hp = 10,
         .str = 2,
         .speed = 0,
-        .mining_sta = 1,
-        .mining_str = 1,
+        .staminaBoost = 1,
+        .miningStr = 1,
         .rarity = common
     };
 

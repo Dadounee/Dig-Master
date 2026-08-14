@@ -8,23 +8,23 @@
 */
 
 void        OreInventoryFree(p_inventory *inv);
-void        inventory_init(player_data *player);
-void        inventories_free(player_data *player);
-void        armor_inventory_init(player_data *player);
-void        InventoryAdd(player_data *player, int minedX, int minedY);
+void        inventory_init(playerData *player);
+void        inventories_free(playerData *player);
+void        armor_inventory_init(playerData *player);
+void        InventoryAdd(playerData *player, int minedX, int minedY);
 
 /*
     WEAPON INIT RELATED STUFF
 */
 
-void first_weapons(player_data *player);
+void first_weapons(playerData *player);
 
 /*
     PLAYER INIT RELATED STUFF
 */
 
-player_data *player_init(void);
-void        player_free(player_data *player);
+playerData *player_init(void);
+void        player_free(playerData *player);
 
 
 /*
@@ -32,8 +32,15 @@ void        player_free(player_data *player);
 */
 
 void        add_armor(weapons_inventory *w_inv, armor *armor);
-void        add_armor_stats(player_data *player, armor *ar);
-void        rem_armor_stats(player_data *player, armor *ar);
-void        equip_pickaxe(player_data *player, pickaxe *pick);
+void        add_armor_stats(playerData *player, armor *ar);
+void        rem_armor_stats(playerData *player, armor *ar);
+void        equip_pickaxe(playerData *player, pickaxe *pick);
+
+/*
+    STAT SECTION FUNCS
+*/
+void    initPlayerStats(playerData *player);
+void    applyPlayerStats(playerData *player);
+void    applyOnePlayerStats(playerData *player, unsigned char stat);
 
 #endif
