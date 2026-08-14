@@ -70,7 +70,6 @@ playerData *player_init(void)
     player.gameState = MINING;
 
     
-    player.display_actualisation = true;
     return (&player);
 }
 

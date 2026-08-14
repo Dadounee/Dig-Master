@@ -39,7 +39,7 @@ void    sellButtonClick(void *infos)
     {
         player->gameState = SELLMENU;
         changeButtonStateName("returnBackButton", ACTIVE);
-        if (player->inv->oreCount == 0)
+        if (player->inv->oreCount == 0 || player->actualSta < SELL_COST)
             changeButtonStateName("sellInvButton", DEACTIVATED);
         else
             changeButtonStateName("sellInvButton", ACTIVE);
@@ -146,6 +146,7 @@ void    sellInvClick(void *infos)
     playerData *player = (playerData *)infos;
 
     SellInventory(player);
+    player->actualSta -= SELL_COST;
     changeButtonStateName("sellInvButton", DEACTIVATED);
 }
 

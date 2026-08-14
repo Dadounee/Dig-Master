@@ -11,7 +11,9 @@
 # define BASE_LUCK 1
 # define BASE_MONEY 0
 # define BASE_MULT 1
-# define BASE_STAMINA 100
+# define BASE_STAMINA 11
+
+# define SELL_COST 8
 
     typedef enum s_game_state {
         MINING,
@@ -100,7 +102,6 @@
         int                 actualSta;
         int                 luck;
 
-        bool                display_actualisation;
         unsigned char       oldState;
         unsigned char       gameState;
         

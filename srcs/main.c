@@ -32,9 +32,9 @@ void    displayHandler(playerData *player)
         ClearBackground(GRAY);
         DisplayPlayerInfos(player, 1.0f);
         DisplayPlayerInv(player, 1.0f);
-        if (player->gameState == MINING && player->display_actualisation)
+        if (player->gameState == MINING)
         {
-            DisplayMap(player->actual_zone, 1.0f, player->inv->inv_size <= player->inv->oreCount);
+            DisplayMap(player->actual_zone, 1.0f, (player->inv->inv_size <= player->inv->oreCount) || (player->actualSta == 0));
             tile_info(&player->actual_zone->mine_map, 1.0f);
         }
         if (player->gameState == INVENTORY)
