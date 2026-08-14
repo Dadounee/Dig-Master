@@ -29,7 +29,10 @@
 >
 > 3. [ ] crate and random drop system
 >
+> 4. [ ] rework button system
+>
 > 4. [ ] ui and ux improvement
+
 
 ## 3. Rework
 
